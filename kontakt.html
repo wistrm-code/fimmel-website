@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kontakt — Fimmel Faktura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="/" class="nav-logo">Fimmel Faktura</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#funktioner">Funktioner</a>
+      <a href="index.html#priser">Priser</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="index.html#hamta" class="nav-cta">Hämta appen</a>
+    </div>
+    <button class="nav-mobile-toggle" id="navToggle" aria-label="Meny">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="#1E2A25" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+
+<section class="contact-hero">
+  <div class="wrap">
+    <h1 class="serif">Hör av dig.</h1>
+    <p>Har du frågor, hittat en bugg, eller bara vill dela en idé? Vi läser allt som kommer in.</p>
+  </div>
+</section>
+
+<div class="contact-cards">
+  <div class="contact-card">
+    <div class="icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-8.5C.7 9 1.9 5.5 5 4.5c2-.6 3.8.3 5 2 1.2-1.7 3-2.6 5-2 3.1 1 4.3 4.5 2.5 8C19 16.5 12 21 12 21Z" stroke="#2F5D4E" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </div>
+    <h3 class="serif">Idéer &amp; feedback</h3>
+    <p>Tyck till om appen, föreslå en funktion eller berätta vad som funkar bra.</p>
+    <a href="mailto:feedback@fimmel.se" class="email">feedback@fimmel.se</a>
+  </div>
+  <div class="contact-card">
+    <div class="icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2F5D4E" stroke-width="1.5"/><path d="M12 8v5l3 2" stroke="#2F5D4E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h3 class="serif">Support</h3>
+    <p>Kört fast, hittat en bugg, eller undrar hur något funkar? Vi hjälper till.</p>
+    <a href="mailto:support@fimmel.se" class="email">support@fimmel.se</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo serif">Fimmel Faktura</div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Produkt</h4>
+          <a href="index.html#funktioner">Funktioner</a>
+          <a href="index.html#priser">Priser</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="kontakt.html">Kontakt</a>
+          <a href="mailto:support@fimmel.se">support@fimmel.se</a>
+        </div>
+        <div class="footer-col">
+          <h4>Juridiskt</h4>
+          <a href="integritetspolicy.html">Integritetspolicy</a>
+          <a href="villkor.html">Användarvillkor</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Fimmel Faktura</span>
+      <span>Gjord för svenska småföretagare</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  });
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+</script>
+
+</body>
+</html>

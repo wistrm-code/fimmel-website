@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integritetspolicy — Fimmel Faktura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="/" class="nav-logo">Fimmel Faktura</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#funktioner">Funktioner</a>
+      <a href="index.html#priser">Priser</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="index.html#hamta" class="nav-cta">Hämta appen</a>
+    </div>
+    <button class="nav-mobile-toggle" id="navToggle" aria-label="Meny">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="#1E2A25" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="legal">
+  <h1 class="serif">Integritetspolicy</h1>
+  <p class="updated">Denna sida fylls i inom kort.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo serif">Fimmel Faktura</div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Produkt</h4>
+          <a href="index.html#funktioner">Funktioner</a>
+          <a href="index.html#priser">Priser</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="kontakt.html">Kontakt</a>
+          <a href="mailto:support@fimmel.se">support@fimmel.se</a>
+        </div>
+        <div class="footer-col">
+          <h4>Juridiskt</h4>
+          <a href="integritetspolicy.html">Integritetspolicy</a>
+          <a href="villkor.html">Användarvillkor</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Fimmel Faktura</span>
+      <span>Gjord för svenska småföretagare</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  });
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+</script>
+
+</body>
+</html>
