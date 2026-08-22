@@ -423,6 +423,7 @@ section{padding:120px 0;}
 
 .price-note{
   margin-top:10px;
+  margin-bottom:40px;
   color:var(--ink-soft);
   font-size:15px;
 }
