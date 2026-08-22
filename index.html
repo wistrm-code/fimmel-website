@@ -14,7 +14,7 @@
 
 <nav class="nav" id="nav">
   <div class="wrap">
-    <a href="/" class="nav-logo">Fimmel Faktura</a>
+    <a href="/" class="nav-logo"><img src="assets/img/logo.png" alt="Fimmel Faktura" height="34"></a>
     <div class="nav-links" id="navLinks">
       <a href="#funktioner">Funktioner</a>
       <a href="#priser">Priser</a>
@@ -30,7 +30,7 @@
 <header class="hero">
   <div class="wrap">
     <div class="hero-text">
-      <span class="eyebrow">Fakturaappen utan krångel</span>
+      <span class="eyebrow">Fakturaappen som fungerar som en fakturaapp ska göra</span>
       <h1 class="serif">Fakturera.<br><em>Klart.</em></h1>
       <p class="hero-sub">Skapa proffsiga fakturor direkt i mobilen — inget konto, ingen molntjänst, ingen prenumeration. Bara appen, i din ficka, när du behöver den.</p>
       <div class="hero-ctas" id="hamta">
@@ -49,6 +49,10 @@
         <span class="hero-badge">
           <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#2F5D4E" stroke-width="1.4"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Allt sparas lokalt
+        </span>
+        <span class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#2F5D4E" stroke-width="1.4"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Ingen bokföring
         </span>
       </div>
     </div>
@@ -132,28 +136,51 @@
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow serif" style="font-style:italic;">Priser</span>
-      <h2 class="serif">En engångskostnad.<br>Aldrig mer.</h2>
+      <h2 class="serif">Betala bara för det<br>du faktiskt behöver.</h2>
       <p>Ingen månadsavgift, ingen bindningstid, ingen räkning du glömmer att säga upp.</p>
     </div>
 
-    <div class="pricing-card">
-      <div class="price-num serif">499 kr<span> engångskostnad</span></div>
-      <p class="price-note">Efter dina första 10 fakturor — helt gratis</p>
-      <ul class="price-list">
-        <li>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          10 fakturor helt gratis, inget kort krävs
-        </li>
-        <li>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Sen 499 kr en gång — inte per månad, inte per år
-        </li>
-        <li>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Obegränsat med fakturor, kunder och företagsprofiler
-        </li>
-      </ul>
-      <a href="#hamta" class="btn btn-primary" style="width:100%;">Kom igång gratis</a>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="price-num serif">299 kr</div>
+        <p class="price-note">10 fakturor att använda när du vill</p>
+        <ul class="price-list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            10 fakturor, ingen förfallodag
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Köp fler paket när du behöver
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Perfekt om du fakturerar sällan
+          </li>
+        </ul>
+        <a href="#hamta" class="btn btn-ghost" style="width:100%;">Kom igång</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <span class="price-badge">Populärast</span>
+        <div class="price-num serif">499 kr<span> engångskostnad</span></div>
+        <p class="price-note">Obegränsat, för alltid</p>
+        <ul class="price-list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Obegränsat med fakturor, för alltid
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            499 kr en gång — inte per månad, inte per år
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E3ECE7"/><path d="M8 12.5l2.5 2.5L16 9" stroke="#2F5D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Obegränsat med kunder och företagsprofiler
+          </li>
+        </ul>
+        <a href="#hamta" class="btn btn-primary" style="width:100%;">Kom igång</a>
+      </div>
     </div>
   </div>
 </section>

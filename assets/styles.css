@@ -62,10 +62,16 @@ img{max-width:100%;display:block;}
 }
 
 .nav-logo{
+  display:flex;
+  align-items:center;
   font-family:'Fraunces',serif;
   font-weight:600;
   font-size:21px;
   letter-spacing:-0.3px;
+}
+
+.nav-logo img{
+  display:block;
 }
 
 .nav-links{
@@ -186,9 +192,11 @@ img{max-width:100%;display:block;}
 }
 
 .hero-badges{
-  display:flex;
-  gap:28px;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:auto auto;
+  column-gap:28px;
+  row-gap:14px;
+  width:fit-content;
 }
 
 .hero-badge{
@@ -357,21 +365,52 @@ section{padding:120px 0;}
 
 /* ---------- pricing ---------- */
 
-.pricing-card{
-  max-width:560px;
+.pricing-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+  max-width:900px;
   margin:0 auto;
+}
+
+.pricing-card{
+  position:relative;
   background:#fff;
   border:1px solid var(--line);
   border-radius:28px;
-  padding:64px 56px;
+  padding:56px 40px;
   text-align:center;
+}
+
+.pricing-card.featured{
+  border-color:var(--forest);
+  box-shadow:0 24px 50px rgba(31,66,54,0.12);
+}
+
+.price-badge{
+  position:absolute;
+  top:-14px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--forest);
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  padding:7px 18px;
+  border-radius:100px;
+}
+
+@media (max-width:700px){
+  .pricing-grid{grid-template-columns:1fr;}
 }
 
 .price-num{
   font-family:'Fraunces',serif;
   font-weight:600;
-  font-size:76px;
-  letter-spacing:-2px;
+  font-size:58px;
+  letter-spacing:-1.5px;
   color:var(--ink);
 }
 
@@ -606,7 +645,7 @@ footer{
   .hero .wrap{grid-template-columns:1fr;text-align:center;}
   .hero-sub{margin-left:auto;margin-right:auto;}
   .hero-ctas{justify-content:center;}
-  .hero-badges{justify-content:center;}
+  .hero-badges{margin-left:auto;margin-right:auto;}
   .hero-visual{margin-top:20px;}
   .features{grid-template-columns:1fr 1fr;}
   .showcase-row{grid-template-columns:1fr;gap:40px;}
