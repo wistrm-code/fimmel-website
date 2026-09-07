@@ -522,6 +522,45 @@ section{padding:120px 0;}
 
 .price-list svg{flex-shrink:0;margin-top:3px;}
 
+.pro-includes{
+  margin:64px auto 0;
+  max-width:860px;
+  text-align:center;
+}
+
+.pro-includes h3{
+  font-weight:600;
+  font-size:20px;
+  letter-spacing:-0.3px;
+  color:var(--forest-deep);
+  margin-bottom:28px;
+}
+
+.pro-includes-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px 28px;
+  text-align:left;
+}
+
+.pro-includes-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.pro-includes-item svg{flex-shrink:0;margin-top:3px;}
+
+.pro-includes-item span{
+  font-size:14px;
+  color:var(--ink-soft);
+  line-height:1.5;
+}
+
+@media (max-width:700px){
+  .pro-includes-grid{grid-template-columns:1fr;}
+}
+
 /* ---------- footer ---------- */
 
 footer{
