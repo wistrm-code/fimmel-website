@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Integritetspolicy — Fimmel Faktura</title>
+<meta name="description" content="Hur Fimmel Faktura samlar in, lagrar och skyddar dina uppgifter, inklusive information om molnsynk, tredjepartsleverantörer och dina rättigheter enligt GDPR.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,7 +29,85 @@
 
 <main class="legal">
   <h1 class="serif">Integritetspolicy</h1>
-  <p class="updated">Denna sida fylls i inom kort.</p>
+  <p class="updated">Senast uppdaterad: september 2026</p>
+
+  <h2 class="serif">Personuppgiftsansvarig</h2>
+  <p>
+    Fimmel AB<br>
+    Org.nr: [ORGANISATIONSNUMMER — fylls i vid företagsregistrering]<br>
+    c/o John Wiström<br>
+    Friggagatan 21<br>
+    416 64 Göteborg<br>
+    E-post: <a href="mailto:support@fimmel.se" style="color:var(--forest);text-decoration:underline;">support@fimmel.se</a>
+  </p>
+  <p>Fimmel AB ("vi", "oss") är personuppgiftsansvarig för de uppgifter som beskrivs nedan, med ett viktigt undantag som förklaras i avsnittet "Vem är ansvarig för dina kunders uppgifter?".</p>
+
+  <h2 class="serif">Utgångspunkten: allt sparas lokalt</h2>
+  <p>Fimmel Faktura är byggd för att fungera helt utan konto och utan inloggning. De uppgifter du matar in — företagsprofil, kunder, fakturor och offerter — sparas som standard bara lokalt på din egen enhet. Vi har ingen tillgång till detta innehåll, och det skickas aldrig till oss eller någon tredje part, om du inte själv aktivt slår på molnsynk (se nedan).</p>
+
+  <h2 class="serif">Uppgifter vi samlar in</h2>
+  <p>Vilka uppgifter som behandlas beror på hur du använder appen:</p>
+  <ul>
+    <li><strong>Data du matar in i appen</strong> (företagsuppgifter, kunder, fakturarader, eventuella personnummer vid ROT/RUT/grönt avdrag) — sparas lokalt på din enhet. Skickas till våra servrar (via Supabase, se nedan) endast om du aktiverar molnsynk, som kräver Pro-paketet och alltid är valfritt.</li>
+    <li><strong>Licensuppgifter</strong> — när du löser in en licensnyckel kopplas den till den e-postadress du angav vid köpet, samt ett anonymt enhets-id för varje enhet nyckeln används på (för att kunna begränsa antalet enheter per licensnivå).</li>
+    <li><strong>Anonym användningsstatistik</strong> — ett slumpmässigt genererat enhets-id (inte kopplat till dig som person), vilken plattform du använder (iPhone/Android/Windows/Mac) och vilka funktioner som används, i syfte att förstå hur appen används och förbättra den. Innehåller inte namn, e-post eller innehållet i dina fakturor.</li>
+    <li><strong>Kraschrapporter</strong> (endast iPhone/Android) — tekniska felrapporter via Firebase Crashlytics om appen kraschar, för att vi ska kunna hitta och fixa buggar. Innehåller tekniska detaljer (enhetsmodell, operativsystemversion, felmeddelande), inte innehållet i dina fakturor.</li>
+  </ul>
+
+  <h2 class="serif">Molnsynk — vad som händer när du slår på det</h2>
+  <p>Molnsynk är en valfri funktion i Pro-paketet som låter dig dela företagsprofiler, kunder, fakturor och offerter mellan upp till tre enheter. Slår du på den skickas denna data till vår databasleverantör Supabase och sparas där så länge molnsynk är aktivt. Slår du av molnsynk igen fortsätter datan finnas kvar lokalt på dina enheter, men slutar synkas.</p>
+
+  <h2 class="serif">Vem är ansvarig för dina kunders uppgifter?</h2>
+  <p>Viktigt att förstå: när du använder Fimmel Faktura för att fakturera dina egna kunder är <strong>du själv</strong> personuppgiftsansvarig för de uppgifter du lägger in om dem (namn, adress, personnummer vid ROT/RUT m.m.) — precis som om du förde bokföringen i ett vanligt kalkylark. Fimmel AB agerar i det läget som ett personuppgiftsbiträde, det vill säga vi behandlar uppgifterna endast på ditt uppdrag (om du har molnsynk aktiverat) och bestämmer inte själva hur de används. Det är därför viktigt att du själv har rättslig grund för att behandla dina kunders uppgifter, t.ex. för att fullgöra ett avtal med dem.</p>
+
+  <h2 class="serif">Personnummer vid ROT, RUT och grönt avdrag</h2>
+  <p>Personnummer är en extra skyddsvärd uppgift enligt svensk rätt. Fimmel Faktura samlar bara in personnummer när du själv aktivt fyller i det för att kunna skapa en avdragsfil åt en av dina kunder. Uppgiften lagras på samma sätt som övrig fakturadata — lokalt som standard, eller synkad via Supabase om du har molnsynk aktiverat. Vi använder aldrig denna uppgift för något annat ändamål.</p>
+
+  <h2 class="serif">Rättslig grund</h2>
+  <ul>
+    <li><strong>Fullgörande av avtal</strong> — för att tillhandahålla appen och hantera din licens/ditt köp.</li>
+    <li><strong>Samtycke</strong> — molnsynk aktiveras aldrig automatiskt, bara om du själv väljer det. Du kan när som helst slå av det igen under Inställningar.</li>
+    <li><strong>Berättigat intresse</strong> — för anonym användningsstatistik och kraschrapporter, som hjälper oss förbättra appen utan att identifiera dig.</li>
+  </ul>
+
+  <h2 class="serif">Tredjepartsleverantörer</h2>
+  <p>Vi delar inte dina uppgifter för marknadsföringsändamål. Följande leverantörer behandlar data å våra vägnar, enbart för att tjänsten ska fungera:</p>
+  <ul>
+    <li><strong>Supabase</strong> — databas för molnsynk, licenshantering och anonym analys. Servrarna står i Frankfurt, Tyskland (EU) — dina uppgifter lämnar alltså inte EU/EES hos denna leverantör.</li>
+    <li><strong>Google Firebase (Crashlytics)</strong> — kraschrapportering, endast på iPhone och Android.</li>
+    <li><strong>Apple och Google</strong> — nedladdning och eventuell köphantering via App Store/Google Play, enligt deras egna villkor.</li>
+    <li><strong>Lemon Squeezy</strong> — betalningshantering vid köp av licens (tillkommer när köpflödet lanseras; uppdateras här när det är live).</li>
+  </ul>
+  <p>Google och Apple är amerikanska bolag och kan behandla viss teknisk data (t.ex. kraschrapporter) på servrar utanför EU/EES. I sådana fall sker överföringen med lämpliga skyddsåtgärder, t.ex. EU-kommissionens standardavtalsklausuler eller ett giltigt adekvansbeslut.</p>
+
+  <h2 class="serif">Lagringstid</h2>
+  <ul>
+    <li>Data som bara sparas lokalt på din enhet ligger kvar tills du själv raderar den eller avinstallerar appen.</li>
+    <li>Data som synkas via molnsynk sparas så länge du har molnsynk aktiverat. Slår du av det raderas den inte automatiskt ur molntjänsten omedelbart, men synkas inte längre.</li>
+    <li>Licens- och enhetsuppgifter sparas så länge licensen är aktiv, för att kunna upprätthålla enhetsgränsen per licensnivå.</li>
+  </ul>
+
+  <h2 class="serif">Cookies</h2>
+  <p>Den här webbplatsen (fimmel.se) använder inga cookies och ingen spårning av besökare.</p>
+
+  <h2 class="serif">Dina rättigheter</h2>
+  <p>Enligt GDPR har du rätt att:</p>
+  <ul>
+    <li>Få tillgång till de uppgifter vi behandlar om dig.</li>
+    <li>Få felaktiga uppgifter rättade.</li>
+    <li>Begära radering av dina uppgifter.</li>
+    <li>Begära begränsning av behandlingen.</li>
+    <li>Få ut dina uppgifter i ett maskinläsbart format (dataportabilitet).</li>
+    <li>Invända mot behandling som grundar sig på berättigat intresse.</li>
+    <li>Återkalla ett samtycke, t.ex. genom att slå av molnsynk.</li>
+  </ul>
+  <p>Kontakta oss på <a href="mailto:support@fimmel.se" style="color:var(--forest);text-decoration:underline;">support@fimmel.se</a> för att utöva någon av dessa rättigheter. Du har också rätt att klaga till Integritetsskyddsmyndigheten (IMY), <a href="https://www.imy.se" style="color:var(--forest);text-decoration:underline;">imy.se</a>, om du anser att vi behandlar dina uppgifter felaktigt.</p>
+
+  <h2 class="serif">Ändringar av denna policy</h2>
+  <p>Vi kan uppdatera denna policy över tid, t.ex. när nya funktioner eller leverantörer tillkommer. Väsentliga ändringar meddelas i appen eller på denna sida.</p>
+
+  <h2 class="serif">Kontakt</h2>
+  <p>Frågor om integritetspolicyn? Hör av dig till <a href="mailto:support@fimmel.se" style="color:var(--forest);text-decoration:underline;">support@fimmel.se</a>.</p>
 </main>
 
 <footer>
