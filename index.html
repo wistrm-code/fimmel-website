@@ -34,23 +34,13 @@
   <div class="wrap account-panel-inner">
     <div id="accountForm">
       <h3 class="serif">Mitt konto</h3>
-      <p class="account-intro">Ange din licensnyckel och den e-postadress den är kopplad till. Vi skickar en engångskod till den adressen för att bekräfta att det är du, sen kan du se och koppla bort dina anslutna enheter — t.ex. om en enhet blivit stulen och du vill frigöra platsen för en ny.</p>
+      <p class="account-intro">Ange din licensnyckel och den e-postadress den är kopplad till för att se och koppla bort dina anslutna enheter — t.ex. om en enhet blivit stulen och du vill frigöra platsen för en ny.</p>
       <div class="account-fields">
         <input type="text" id="accKey" placeholder="Licensnyckel, t.ex. ABCD-1234">
         <input type="email" id="accEmail" placeholder="E-postadress">
-        <button id="accSubmit" class="btn btn-primary" style="width:fit-content;">Skicka kod</button>
+        <button id="accSubmit" class="btn btn-primary" style="width:fit-content;">Visa mina enheter</button>
       </div>
       <p id="accError" class="account-error" hidden></p>
-    </div>
-    <div id="accountCode" hidden>
-      <h3 class="serif">Bekräfta din e-post</h3>
-      <p class="account-intro">Vi har skickat en 6-siffrig kod till <strong id="accCodeEmail"></strong>. Ange den nedan — koden är giltig en kort stund.</p>
-      <div class="account-fields">
-        <input type="text" id="accCode" placeholder="6-siffrig kod" inputmode="numeric" maxlength="6" style="max-width:160px;">
-        <button id="accVerify" class="btn btn-primary" style="width:fit-content;">Bekräfta</button>
-      </div>
-      <p id="accCodeError" class="account-error" hidden></p>
-      <button id="accCodeBack" class="account-back" style="margin-top:14px;">Fel licensnyckel eller e-post? Börja om</button>
     </div>
     <div class="account-devices" id="accountDevices" hidden>
       <div class="account-devices-head">
@@ -307,42 +297,35 @@
 </script>
 
 <script>
-  // "Mitt konto" — lets someone confirm they own a license (key + a code
-  // emailed to the address on file, via Supabase's own built-in email-OTP
-  // delivery — no external email service needed) and then see/disconnect
-  // their devices, e.g. after losing a phone. Real enforcement lives in
-  // Postgres RLS: license_devices only allows access to an *authenticated*
-  // Supabase session whose verified email matches the license's email on
-  // file (see supabase_account_panel_security.sql) — this page can't be
-  // bypassed by calling the API directly, unlike a client-side-only check.
+  // "Mitt konto" — lets someone with a license key and its associated
+  // email see and disconnect their own devices (e.g. a stolen phone).
+  // The license_key+email match is checked *inside the database*, via
+  // two SECURITY DEFINER functions (get_license_devices /
+  // disconnect_license_device — see supabase_account_panel_v2.sql), the
+  // same pattern register_license_device already uses for the app itself.
+  // That means it can't be bypassed by calling the API directly and
+  // skipping the check, unlike checking the email match only in this
+  // browser code.
   const SUPABASE_URL = 'https://ikaievzwqzsllkxagfau.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_A2Mzk1DdFdajsdK3369DGg_o6aMlmom';
 
-  const tierLabels = { addon10: 'Tilläggspaket', basic: 'Basic', pro: 'Pro' };
   const platformLabels = { android: 'Android', ios: 'iPhone', windows: 'Windows', macos: 'Mac' };
 
   const accountToggle = document.getElementById('accountToggle');
   const accountPanel = document.getElementById('accountPanel');
   const accountForm = document.getElementById('accountForm');
-  const accountCode = document.getElementById('accountCode');
   const accountDevices = document.getElementById('accountDevices');
   const accKey = document.getElementById('accKey');
   const accEmail = document.getElementById('accEmail');
   const accSubmit = document.getElementById('accSubmit');
   const accError = document.getElementById('accError');
-  const accCode = document.getElementById('accCode');
-  const accCodeEmail = document.getElementById('accCodeEmail');
-  const accVerify = document.getElementById('accVerify');
-  const accCodeError = document.getElementById('accCodeError');
-  const accCodeBack = document.getElementById('accCodeBack');
   const accDeviceList = document.getElementById('accDeviceList');
   const accTierLabel = document.getElementById('accTierLabel');
   const accBack = document.getElementById('accBack');
 
   // Kept only in memory for this page visit — never persisted.
   let pendingLicenseKey = null;
-  let pendingTier = null;
-  let sessionAccessToken = null;
+  let pendingEmail = null;
 
   accountToggle.addEventListener('click', (e) => {
     e.preventDefault();
@@ -354,31 +337,26 @@
     el.hidden = false;
   }
 
-  async function sbFetch(path, options, accessToken) {
-    options = options || {};
-    const headers = Object.assign(
-      {
+  async function sbRpc(fn, body) {
+    return fetch(SUPABASE_URL + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: {
         apikey: SUPABASE_KEY,
-        Authorization: 'Bearer ' + (accessToken || SUPABASE_KEY),
+        Authorization: 'Bearer ' + SUPABASE_KEY,
         'Content-Type': 'application/json',
       },
-      options.headers || {}
-    );
-    return fetch(SUPABASE_URL + path, Object.assign({}, options, { headers }));
+      body: JSON.stringify(body),
+    });
   }
 
   function resetToStart() {
     accountForm.hidden = false;
-    accountCode.hidden = true;
     accountDevices.hidden = true;
     accKey.value = '';
     accEmail.value = '';
-    accCode.value = '';
     accError.hidden = true;
-    accCodeError.hidden = true;
     pendingLicenseKey = null;
-    pendingTier = null;
-    sessionAccessToken = null;
+    pendingEmail = null;
   }
 
   accSubmit.addEventListener('click', async () => {
@@ -390,86 +368,29 @@
       return;
     }
     accSubmit.disabled = true;
-    accSubmit.textContent = 'Skickar...';
+    accSubmit.textContent = 'Söker...';
     try {
-      const res = await sbFetch('/rest/v1/license_keys?license_key=eq.' + encodeURIComponent(key) + '&select=email,tier');
-      const rows = await res.json();
-      if (!res.ok || !rows.length) {
-        showError(accError, 'Hittade ingen licens med den nyckeln.');
+      const res = await sbRpc('get_license_devices', { p_license_key: key, p_email: email });
+      if (!res.ok) {
+        showError(accError, 'Hittade ingen licens med den kombinationen av nyckel och e-post.');
         return;
       }
-      if (!rows[0].email || rows[0].email.toLowerCase() !== email) {
-        showError(accError, 'E-postadressen stämmer inte med den här licensnyckeln.');
-        return;
-      }
-      pendingTier = rows[0].tier;
-      const otpRes = await sbFetch('/auth/v1/otp', {
-        method: 'POST',
-        body: JSON.stringify({ email: email, create_user: true }),
-      });
-      if (!otpRes.ok) {
-        showError(accError, 'Kunde inte skicka koden just nu. Försök igen om en stund.');
-        return;
-      }
+      const devices = await res.json();
       pendingLicenseKey = key;
-      accCodeEmail.textContent = email;
-      accountForm.hidden = true;
-      accountCode.hidden = false;
-      accCode.focus();
+      pendingEmail = email;
+      renderAccDevices(devices);
     } catch (err) {
       showError(accError, 'Något gick fel. Försök igen om en stund.');
     } finally {
       accSubmit.disabled = false;
-      accSubmit.textContent = 'Skicka kod';
+      accSubmit.textContent = 'Visa mina enheter';
     }
   });
 
-  accVerify.addEventListener('click', async () => {
-    accCodeError.hidden = true;
-    const code = accCode.value.trim();
-    const email = accEmail.value.trim().toLowerCase();
-    if (!code) {
-      showError(accCodeError, 'Ange koden du fick på mejl.');
-      return;
-    }
-    accVerify.disabled = true;
-    accVerify.textContent = 'Bekräftar...';
-    try {
-      const res = await sbFetch('/auth/v1/verify', {
-        method: 'POST',
-        body: JSON.stringify({ type: 'email', email: email, token: code }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.access_token) {
-        showError(accCodeError, 'Fel kod, eller så har den gått ut. Försök igen.');
-        return;
-      }
-      sessionAccessToken = data.access_token;
-      const devRes = await sbFetch(
-        '/rest/v1/license_devices?license_key=eq.' + encodeURIComponent(pendingLicenseKey) +
-        '&select=device_id,platform,first_connected_at,last_seen_at&order=last_seen_at.desc',
-        {},
-        sessionAccessToken
-      );
-      const devices = await devRes.json();
-      if (!devRes.ok) {
-        showError(accCodeError, 'Kunde inte hämta dina enheter. Försök igen.');
-        return;
-      }
-      renderAccDevices(pendingLicenseKey, pendingTier, devices);
-    } catch (err) {
-      showError(accCodeError, 'Något gick fel. Försök igen om en stund.');
-    } finally {
-      accVerify.disabled = false;
-      accVerify.textContent = 'Bekräfta';
-    }
-  });
-
-  function renderAccDevices(key, tier, devices) {
+  function renderAccDevices(devices) {
     accountForm.hidden = true;
-    accountCode.hidden = true;
     accountDevices.hidden = false;
-    accTierLabel.textContent = tierLabels[tier] || tier || '';
+    accTierLabel.textContent = pendingEmail;
     accDeviceList.innerHTML = '';
     if (!devices.length) {
       accDeviceList.innerHTML = '<p class="account-empty">Inga enheter anslutna just nu.</p>';
@@ -493,11 +414,11 @@
         if (!window.confirm('Koppla bort den här enheten från din licens?')) return;
         btn.disabled = true;
         btn.textContent = 'Kopplar bort...';
-        const delRes = await sbFetch(
-          '/rest/v1/license_devices?license_key=eq.' + encodeURIComponent(key) + '&device_id=eq.' + encodeURIComponent(d.device_id),
-          { method: 'DELETE' },
-          sessionAccessToken
-        );
+        const delRes = await sbRpc('disconnect_license_device', {
+          p_license_key: pendingLicenseKey,
+          p_email: pendingEmail,
+          p_device_id: d.device_id,
+        });
         if (delRes.ok) {
           row.remove();
         } else {
@@ -512,7 +433,6 @@
     });
   }
 
-  accCodeBack.addEventListener('click', resetToStart);
   accBack.addEventListener('click', resetToStart);
 </script>
 
