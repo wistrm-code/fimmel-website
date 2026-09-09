@@ -39,7 +39,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-8.5C.7 9 1.9 5.5 5 4.5c2-.6 3.8.3 5 2 1.2-1.7 3-2.6 5-2 3.1 1 4.3 4.5 2.5 8C19 16.5 12 21 12 21Z" stroke="#2F5D4E" stroke-width="1.5" stroke-linejoin="round"/></svg>
     </div>
     <h3 class="serif">Idéer &amp; feedback</h3>
-    <p>Tyck till om appen, föreslå en funktion eller berätta vad som funkar bra.</p>
+    <p>Saknar du något? Om du föreslår en förbättring till appen som vi sedan genomför swishar vi dig 500 kr.</p>
     <a href="mailto:feedback@fimmel.se" class="email">feedback@fimmel.se</a>
   </div>
   <a class="contact-card" href="support.html">
@@ -51,33 +51,6 @@
     <span class="email">Till Support &amp; FAQ →</span>
   </a>
 </div>
-
-<section class="contact-form-section">
-  <div class="wrap">
-    <p class="contact-form-lead">Eller skriv direkt här, så återkommer vi så snart vi kan.</p>
-    <form id="contactForm" class="contact-form">
-      <input type="hidden" name="access_key" value="b9d9a08d-905a-4813-bfbd-226de8590400">
-      <input type="hidden" name="subject" value="Nytt meddelande från fimmel.se/kontakt">
-      <input type="checkbox" name="botcheck" class="contact-form-honeypot" tabindex="-1" autocomplete="off">
-
-      <div class="contact-form-row">
-        <label for="cfName">Namn</label>
-        <input type="text" id="cfName" name="name" required>
-      </div>
-      <div class="contact-form-row">
-        <label for="cfEmail">E-post</label>
-        <input type="email" id="cfEmail" name="email" required>
-      </div>
-      <div class="contact-form-row">
-        <label for="cfMessage">Meddelande</label>
-        <textarea id="cfMessage" name="message" rows="5" required></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary" id="cfSubmit">Skicka meddelande</button>
-      <p class="contact-form-status" id="cfStatus" hidden></p>
-    </form>
-  </div>
-</section>
 
 <footer>
   <div class="wrap">
@@ -119,43 +92,6 @@
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
   toggle.addEventListener('click', () => links.classList.toggle('open'));
-</script>
-
-<script>
-  // Sends the contact form straight to support@fimmel.se via Web3Forms —
-  // no backend of our own, no SMTP to run. Submitted as JSON (rather than
-  // a plain form POST) so the page never navigates away; the person just
-  // sees an inline confirmation.
-  const contactForm = document.getElementById('contactForm');
-  const cfStatus = document.getElementById('cfStatus');
-  const cfSubmit = document.getElementById('cfSubmit');
-
-  contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    cfStatus.hidden = true;
-    cfSubmit.disabled = true;
-    cfSubmit.textContent = 'Skickar…';
-    try {
-      const payload = Object.fromEntries(new FormData(contactForm).entries());
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await res.json();
-      if (!result.success) throw new Error(result.message || 'unknown');
-      contactForm.reset();
-      cfStatus.textContent = 'Tack! Ditt meddelande är skickat — vi hör av oss så snart vi kan.';
-      cfStatus.className = 'contact-form-status success';
-    } catch (err) {
-      cfStatus.textContent = 'Något gick fel. Prova igen, eller maila oss direkt på feedback@fimmel.se.';
-      cfStatus.className = 'contact-form-status error';
-    } finally {
-      cfStatus.hidden = false;
-      cfSubmit.disabled = false;
-      cfSubmit.textContent = 'Skicka meddelande';
-    }
-  });
 </script>
 
 </body>
