@@ -825,15 +825,93 @@ footer{
   margin-bottom:18px;
 }
 
-.contact-card a.email{
+.contact-card a.email,
+.contact-card .email{
   font-weight:600;
   color:var(--forest);
   font-size:15px;
 }
 
+a.contact-card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+}
+
 @media (max-width:640px){
   .contact-cards{grid-template-columns:1fr;}
 }
+
+/* ---------- support / FAQ page ---------- */
+
+.faq-page{
+  max-width:760px;
+  margin:0 auto;
+  padding:0 32px 140px;
+}
+
+.faq-category{margin-bottom:56px;}
+
+.faq-category h2{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:24px;
+  letter-spacing:-0.3px;
+  margin-bottom:20px;
+  color:var(--forest-deep);
+}
+
+.faq-item{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+
+.faq-item summary{
+  list-style:none;
+  cursor:pointer;
+  padding:18px 22px;
+  font-weight:600;
+  font-size:15.5px;
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.faq-item summary::-webkit-details-marker{display:none;}
+
+.faq-item summary::after{
+  content:'+';
+  font-size:22px;
+  font-weight:400;
+  color:var(--forest);
+  flex-shrink:0;
+  transition:transform .2s ease;
+}
+
+.faq-item[open] summary::after{transform:rotate(45deg);}
+
+.faq-item p{
+  padding:0 22px 20px;
+  color:var(--ink-soft);
+  font-size:14.5px;
+  line-height:1.65;
+}
+
+.faq-support-note{
+  text-align:center;
+  margin-top:48px;
+  padding-top:40px;
+  border-top:1px solid var(--line);
+  color:var(--ink-soft);
+  font-size:15px;
+}
+
+.faq-support-note a{color:var(--forest);font-weight:600;}
 
 /* ---------- legal pages ---------- */
 
