@@ -36,14 +36,7 @@
 
 <main class="faq-page">
 
-  <div class="faq-category">
-    <h2 class="serif">Kom igång</h2>
-
-    <details class="faq-item">
-      <summary>Var sparas min data?</summary>
-      <p>Lokalt på din enhet som standard. Vill du dela data mellan flera enheter kan du aktivera molnsynk (Pro) — helt valfritt, aldrig ett krav.</p>
-    </details>
-  </div>
+  <input type="search" class="faq-search" id="faqSearch" placeholder="Sök i vanliga frågor…" aria-label="Sök i vanliga frågor">
 
   <div class="faq-category">
     <h2 class="serif">Fakturering &amp; offerter</h2>
@@ -98,17 +91,22 @@
 
     <details class="faq-item">
       <summary>Hur bokför jag?</summary>
-      <p>Denna app har ingen bokföring.</p>
+      <p>Fimmel Faktura är en renodlad faktureringsapp utan bokföring, det finns dock flera <a href="#bokforing-fakturor">möjligheter</a> för dig att koppla ihop det med din bokföring.</p>
     </details>
 
-    <details class="faq-item">
+    <details class="faq-item" id="bokforing-fakturor">
       <summary>Hur får jag in fakturorna i min bokföring?</summary>
-      <p>Detta kan göras på flera sätt utefter vad som passar dig bäst. Det enklaste är att bocka i Dold kopia längst ner på din Företagsprofil. Då skickar du en faktura till angiven mailadress varje gång du skickar ut till en kund. Du kan även dra ut vilka fakturor du vill ihop med sammanställning från Fakturaarkivet (bock-knapp uppe till höger) eller Exportera, allt läggs som bifogade filer i ett mail. Du kan även dra ut en SIE-fil under Exportera om du vill importera det i ditt bokföringsprogram med bokföringskonton.</p>
+      <p class="faq-lead">De tre enklaste alternativen är:</p>
+      <ol>
+        <li>Bocka i Dold kopia längst ner på din Företagsprofil. Då skickar du en faktura till angiven mailadress varje gång du skickar ut till en kund.</li>
+        <li>Dra ut vilka fakturor du vill ihop med sammanställning från Fakturaarkivet (bock-knapp uppe till höger) eller Exportera, allt läggs som bifogade filer i ett mail.</li>
+        <li>Dra ut en SIE-fil under Exportera om du vill importera det i ditt bokföringsprogram med bokföringskonton.</li>
+      </ol>
     </details>
   </div>
 
   <div class="faq-category">
-    <h2 class="serif">Molnsynk &amp; enheter <span style="font-size:15px;color:var(--muted);font-family:'Inter',sans-serif;font-weight:600;">— Pro</span></h2>
+    <h2 class="serif">Molnsynk &amp; enheter</h2>
 
     <details class="faq-item">
       <summary>Vad är molnsynk och behöver jag det?</summary>
@@ -127,12 +125,12 @@
 
     <details class="faq-item">
       <summary>Fungerar appen utan internet?</summary>
-      <p>Ja. Allt fungerar offline, och molnsynken synkar automatiskt i bakgrunden nästa gång du är uppkopplad.</p>
+      <p>Ja, du kan skapa kunder, fakturor och offerter helt utan uppkoppling. Själva utskicket, t.ex. via mail, kräver förstås nät i det ögonblicket — precis som att skicka vilket mejl som helst — men du kan skapa och spara fakturan offline och skicka den så fort du är uppkopplad igen. Har du molnsynk aktiverat synkas dina ändringar automatiskt till dina andra enheter nästa gång du är online.</p>
     </details>
   </div>
 
   <div class="faq-category">
-    <h2 class="serif">Arbetsdagbok <span style="font-size:15px;color:var(--muted);font-family:'Inter',sans-serif;font-weight:600;">— Pro</span></h2>
+    <h2 class="serif">Arbetsdagbok</h2>
 
     <details class="faq-item">
       <summary>Vad är Arbetsdagbok?</summary>
@@ -173,6 +171,11 @@
     <h2 class="serif">Data &amp; säkerhet</h2>
 
     <details class="faq-item">
+      <summary>Var sparas min data?</summary>
+      <p>Lokalt på din enhet som standard. Vill du dela data mellan flera enheter kan du aktivera molnsynk (Pro) — helt valfritt, aldrig ett krav.</p>
+    </details>
+
+    <details class="faq-item">
       <summary>Vem äger min data?</summary>
       <p>Du. Allt sparas lokalt på din enhet som standard och delas aldrig utan att du själv väljer det, till exempel genom att aktivera molnsynk.</p>
     </details>
@@ -187,6 +190,8 @@
       <p>Ja. Data lagras inom EU och skyddas av din unika licensnyckel — läs mer i vår <a href="integritetspolicy.html">integritetspolicy</a>.</p>
     </details>
   </div>
+
+  <p class="faq-empty" id="faqEmpty">Inga frågor matchade din sökning.</p>
 
   <p class="faq-support-note">Hittade du inte svaret du sökte? <a href="kontakt.html">Hör av dig</a> så hjälper vi dig.</p>
 
@@ -232,6 +237,49 @@
   const toggle = document.getElementById('navToggle');
   const links = document.getElementById('navLinks');
   toggle.addEventListener('click', () => links.classList.toggle('open'));
+</script>
+
+<script>
+  // Live FAQ search — filters questions (and their answer text) as you
+  // type, hides whole categories once none of their questions match, and
+  // opens whatever's left so the answer is visible without an extra
+  // click. Clearing the box just shows everything again.
+  const faqSearch = document.getElementById('faqSearch');
+  const faqCategories = document.querySelectorAll('.faq-category');
+  const faqEmpty = document.getElementById('faqEmpty');
+
+  faqSearch.addEventListener('input', () => {
+    const q = faqSearch.value.trim().toLowerCase();
+    let anyVisible = false;
+    faqCategories.forEach((cat) => {
+      let catHasVisible = false;
+      cat.querySelectorAll('.faq-item').forEach((item) => {
+        const match = q === '' || item.textContent.toLowerCase().includes(q);
+        item.classList.toggle('faq-hidden', !match);
+        if (match) {
+          catHasVisible = true;
+          if (q !== '') item.open = true;
+        }
+      });
+      cat.classList.toggle('faq-hidden', !catHasVisible);
+      if (catHasVisible) anyVisible = true;
+    });
+    faqEmpty.style.display = q !== '' && !anyVisible ? 'block' : 'none';
+  });
+
+  // Fragment links (e.g. "möjligheter" in the bokföring-svaret) should
+  // open the target FAQ item even though it's a collapsed <details> —
+  // not every browser does this natively yet.
+  function openFaqTargetFromHash() {
+    if (!location.hash) return;
+    const el = document.querySelector(location.hash);
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  window.addEventListener('DOMContentLoaded', openFaqTargetFromHash);
+  window.addEventListener('hashchange', openFaqTargetFromHash);
 </script>
 
 </body>
