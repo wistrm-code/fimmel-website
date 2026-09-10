@@ -62,8 +62,8 @@
   <p>Vilka uppgifter som behandlas beror på hur du använder appen:</p>
   <ul>
     <li><strong>Data du matar in i appen</strong> (företagsuppgifter, kunder, fakturarader, eventuella personnummer vid ROT/RUT/grönt avdrag, arbetsloggar i Arbetsdagboken och mallar för återkommande fakturering) — sparas lokalt på din enhet. Skickas till våra servrar (via Supabase, se nedan) endast om du aktiverar molnsynk, som kräver Pro-paketet och alltid är valfritt.</li>
-    <li><strong>Licensuppgifter</strong> — när du löser in en licensnyckel kopplas den till den e-postadress du angav vid köpet, samt ett anonymt enhets-id för varje enhet nyckeln används på (för att kunna begränsa antalet enheter per licensnivå).</li>
-    <li><strong>Anonym användningsstatistik</strong> — ett slumpmässigt genererat enhets-id (inte kopplat till dig som person), vilken plattform du använder (iPhone/Android/Windows/Mac) och vilka funktioner som används, i syfte att förstå hur appen används och förbättra den. Innehåller inte namn, e-post eller innehållet i dina fakturor.</li>
+    <li><strong>Licensuppgifter</strong> — när du löser in en licensnyckel kopplas den till den e-postadress du angav vid köpet, samt ett enhets-id för varje enhet nyckeln används på (för att kunna begränsa antalet enheter per licensnivå).</li>
+    <li><strong>Statistik och prestandaövervakning</strong> — ett slumpmässigt genererat enhets-id, vilken plattform du använder (iPhone/Android/Windows/Mac) och vilka funktioner som används, i syfte att förstå hur appen används och förbättra den. Detta är samma enhets-id som används för licenshantering (se ovan) och räknas därför som en pseudonymiserad uppgift, inte en helt anonym sådan, eftersom det tekniskt går att koppla till en licensnyckel och därigenom till den e-postadress som angavs vid köpet. Statistiken innehåller aldrig namn, e-post eller innehållet i dina fakturor.</li>
     <li><strong>Kraschrapporter</strong> (endast iPhone/Android) — tekniska felrapporter via Firebase Crashlytics om appen kraschar, för att vi ska kunna hitta och fixa buggar. Innehåller tekniska detaljer (enhetsmodell, operativsystemversion, felmeddelande), inte innehållet i dina fakturor.</li>
   </ul>
 
@@ -75,6 +75,7 @@
 
   <h2 class="serif">Vem är ansvarig för dina kunders uppgifter?</h2>
   <p>Viktigt att förstå: när du använder Fimmel Faktura för att fakturera dina egna kunder är <strong>du själv</strong> personuppgiftsansvarig för de uppgifter du lägger in om dem (namn, adress, personnummer vid ROT/RUT m.m.) — precis som om du förde bokföringen i ett vanligt kalkylark. Fimmel AB agerar i det läget som ett personuppgiftsbiträde, det vill säga vi behandlar uppgifterna endast på ditt uppdrag (om du har molnsynk aktiverat) och bestämmer inte själva hur de används. Det är därför viktigt att du själv har rättslig grund för att behandla dina kunders uppgifter, t.ex. för att fullgöra ett avtal med dem.</p>
+  <p>De närmare villkoren för detta personuppgiftsbiträdesförhållande — vad vi får göra med uppgifterna, vilka säkerhetsåtgärder vi vidtar och vad som gäller om du slutar använda tjänsten — finns samlade i ett <a href="villkor.html#pub-avtal" style="color:var(--forest);text-decoration:underline;">personuppgiftsbiträdesavtal</a> som är en bilaga till våra användarvillkor och som du godkänner genom att aktivera molnsynk.</p>
 
   <h2 class="serif">Personnummer vid ROT, RUT och grönt avdrag</h2>
   <p>Personnummer är en extra skyddsvärd uppgift enligt svensk rätt. Fimmel Faktura samlar bara in personnummer när du själv aktivt fyller i det för att kunna skapa en avdragsfil åt en av dina kunder. Uppgiften lagras på samma sätt som övrig fakturadata — lokalt som standard, eller synkad via Supabase om du har molnsynk aktiverat. Vi använder aldrig denna uppgift för något annat ändamål.</p>
@@ -83,13 +84,13 @@
   <ul>
     <li><strong>Fullgörande av avtal</strong> — för att tillhandahålla appen och hantera din licens/ditt köp.</li>
     <li><strong>Samtycke</strong> — molnsynk aktiveras aldrig automatiskt, bara om du själv väljer det. Du kan när som helst slå av det igen under Inställningar.</li>
-    <li><strong>Berättigat intresse</strong> — för anonym användningsstatistik och kraschrapporter, som hjälper oss förbättra appen utan att identifiera dig.</li>
+    <li><strong>Berättigat intresse</strong> — för statistik, prestandaövervakning och kraschrapporter, som hjälper oss förbättra appen. Uppgifterna innehåller aldrig innehållet i dina fakturor.</li>
   </ul>
 
   <h2 class="serif">Tredjepartsleverantörer</h2>
   <p>Vi delar inte dina uppgifter för marknadsföringsändamål. Följande leverantörer behandlar data å våra vägnar, enbart för att tjänsten ska fungera:</p>
   <ul>
-    <li><strong>Supabase</strong> — databas för molnsynk, licenshantering och anonym analys. Servrarna står i Frankfurt, Tyskland (EU) — dina uppgifter lämnar alltså inte EU/EES hos denna leverantör.</li>
+    <li><strong>Supabase</strong> — databas för molnsynk, licenshantering samt statistik och prestandaövervakning. Servrarna står i Frankfurt, Tyskland (EU) — dina uppgifter lämnar alltså inte EU/EES hos denna leverantör.</li>
     <li><strong>Google Firebase (Crashlytics)</strong> — kraschrapportering, endast på iPhone och Android.</li>
     <li><strong>Apple och Google</strong> — nedladdning och eventuell köphantering via App Store/Google Play, enligt deras egna villkor.</li>
     <li><strong>Lemon Squeezy</strong> — betalningshantering vid köp av licens (tillkommer när köpflödet lanseras; uppdateras här när det är live).</li>
@@ -99,8 +100,9 @@
   <h2 class="serif">Lagringstid</h2>
   <ul>
     <li>Data som bara sparas lokalt på din enhet ligger kvar tills du själv raderar den eller avinstallerar appen.</li>
-    <li>Data som synkas via molnsynk sparas så länge du har molnsynk aktiverat. Slår du av det raderas den inte automatiskt ur molntjänsten omedelbart, men synkas inte längre.</li>
+    <li>Data som synkas via molnsynk sparas så länge du har molnsynk aktiverat. Slår du av molnsynk fortsätter uppgifterna finnas kvar hos Supabase, men slutar synkas. Vill du att vi tar bort dem helt ur molnet — t.ex. för att du slutar använda tjänsten — kontaktar du oss <a href="kontakt.html" style="color:var(--forest);text-decoration:underline;">via vår kontaktsida</a>, så raderar vi dem utan onödigt dröjsmål och normalt inom en månad, i linje med tidsfristen för rättighetsbegäranden enligt GDPR (se "Dina rättigheter" nedan).</li>
     <li>Licens- och enhetsuppgifter sparas så länge licensen är aktiv, för att kunna upprätthålla enhetsgränsen per licensnivå.</li>
+    <li>Om vi i framtiden sparar uppgifter om dina köp eller licenstransaktioner på våra egna servrar för vår bokföring gäller bokföringslagens krav på minst sju års arkivering för just den uppgiften, vilket i så fall går före en begäran om radering av den specifika transaktionsdatan.</li>
   </ul>
 
   <h2 class="serif">Cookies</h2>
