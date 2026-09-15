@@ -63,7 +63,7 @@
   <ul>
     <li><strong>Data du matar in i appen</strong> (företagsuppgifter, kunder, fakturarader, eventuella personnummer vid ROT/RUT/grönt avdrag, arbetsloggar i Arbetsdagboken och mallar för återkommande fakturering) — sparas lokalt på din enhet. Skickas till våra servrar (via Supabase, se nedan) endast om du aktiverar molnsynk, som kräver Pro-paketet och alltid är valfritt.</li>
     <li><strong>Licensuppgifter</strong> — när du löser in en licensnyckel kopplas den till den e-postadress du angav vid köpet, samt ett enhets-id för varje enhet nyckeln används på (för att kunna begränsa antalet enheter per licensnivå).</li>
-    <li><strong>Statistik och prestandaövervakning</strong> — ett slumpmässigt genererat enhets-id, vilken plattform du använder (iPhone/Android/Windows/Mac) och vilka funktioner som används, i syfte att förstå hur appen används och förbättra den. Detta är samma enhets-id som används för licenshantering (se ovan) och räknas därför som en pseudonymiserad uppgift, inte en helt anonym sådan, eftersom det tekniskt går att koppla till en licensnyckel och därigenom till den e-postadress som angavs vid köpet. Statistiken innehåller aldrig namn, e-post eller innehållet i dina fakturor.</li>
+    <li><strong>Statistik och prestandaövervakning</strong> — ett slumpmässigt genererat enhets-id, vilken plattform du använder (iPhone/Android/Windows/Mac) och vilka funktioner som används, i syfte att förstå hur appen används och förbättra den. Detta är samma enhets-id som används för licenshantering (se ovan) och räknas därför som en pseudonymiserad uppgift, inte en helt anonym sådan, eftersom det tekniskt går att koppla till en licensnyckel och därigenom till den e-postadress som angavs vid köpet. Statistiken innehåller aldrig namn, e-post eller innehållet i dina fakturor. Insamlingen sker oavsett om molnsynk är aktiverat eller inte, och du kan radera den när du vill direkt i appen (Inställningar → Dataskydd).</li>
     <li><strong>Kraschrapporter</strong> (endast iPhone/Android) — tekniska felrapporter via Firebase Crashlytics om appen kraschar, för att vi ska kunna hitta och fixa buggar. Innehåller tekniska detaljer (enhetsmodell, operativsystemversion, felmeddelande), inte innehållet i dina fakturor.</li>
   </ul>
 
@@ -89,21 +89,27 @@
   </ul>
 
   <h2 class="serif">Tredjepartsleverantörer</h2>
-  <p>Vi delar inte dina uppgifter för marknadsföringsändamål. Följande leverantörer behandlar data å våra vägnar, enbart för att tjänsten ska fungera:</p>
+  <p>Vi delar inte dina uppgifter för marknadsföringsändamål. Vi anlitar leverantörer i två olika roller:</p>
+  <p><strong>Personuppgiftsbiträden</strong> — behandlar data enbart på vårt uppdrag och enligt våra instruktioner, för att tjänsten ska fungera:</p>
   <ul>
     <li><strong>Supabase</strong> — databas för molnsynk, licenshantering samt statistik och prestandaövervakning. Servrarna står i Frankfurt, Tyskland (EU) — dina uppgifter lämnar alltså inte EU/EES hos denna leverantör.</li>
     <li><strong>Google Firebase (Crashlytics)</strong> — kraschrapportering, endast på iPhone och Android.</li>
-    <li><strong>Apple och Google</strong> — nedladdning, samt köphantering av Tilläggspaket, Basic och Pro när du köper på iPhone eller Android, enligt deras egna villkor.</li>
-    <li><strong>Lemon Squeezy</strong> — betalningshantering vid köp av licens på Windows och Mac (tillkommer när köpflödet lanseras; uppdateras här när det är live), enligt Lemon Squeezys villkor.</li>
+  </ul>
+  <p><strong>Självständiga personuppgiftsansvariga (Merchant of Record)</strong> — när du köper Tilläggspaket, Basic eller Pro agerar nedanstående leverantörer som självständig säljare (Merchant of Record) av licensen, inte bara som betalningsförmedlare åt oss. De ansvarar själva för t.ex. moms/sales tax, kvitton, återbetalningar och kundtjänst kring själva köpet, och bestämmer själva — inte vi — hur de behandlar dina köp- och betalningsuppgifter (namn, e-post, betalningsuppgifter, faktureringsadress), enligt sina egna integritetspolicyer:</p>
+  <ul>
+    <li><strong>Apple och Google</strong> — Merchant of Record för köp av Tilläggspaket, Basic och Pro på iPhone respektive Android, enligt deras egna villkor.</li>
+    <li><strong>Lemon Squeezy</strong> — Merchant of Record för köp av licens på Windows och Mac (tillkommer när köpflödet lanseras; uppdateras här när det är live), enligt Lemon Squeezys <a href="https://www.lemonsqueezy.com/privacy" style="color:var(--forest);text-decoration:underline;" target="_blank" rel="noopener">integritetspolicy</a>.</li>
   </ul>
   <p>Google, Apple och Lemon Squeezy är amerikanska bolag och kan behandla viss data (t.ex. kraschrapporter eller betalningsuppgifter) på servrar utanför EU/EES. I sådana fall sker överföringen med lämpliga skyddsåtgärder, t.ex. EU-kommissionens standardavtalsklausuler eller ett giltigt adekvansbeslut (t.ex. EU-U.S. Data Privacy Framework).</p>
 
   <h2 class="serif">Lagringstid</h2>
   <ul>
     <li>Data som bara sparas lokalt på din enhet ligger kvar tills du själv raderar den eller avinstallerar appen.</li>
-    <li>Data som synkas via molnsynk sparas så länge du har molnsynk aktiverat. Slår du av molnsynk fortsätter uppgifterna finnas kvar hos Supabase, men slutar synkas. Vill du att vi tar bort dem helt ur molnet — t.ex. för att du slutar använda tjänsten — kontaktar du oss <a href="kontakt.html" style="color:var(--forest);text-decoration:underline;">via vår kontaktsida</a>, så raderar vi dem utan onödigt dröjsmål och normalt inom en månad, i linje med tidsfristen för rättighetsbegäranden enligt GDPR (se "Dina rättigheter" nedan).</li>
+    <li>Data som synkas via molnsynk sparas så länge du har molnsynk aktiverat. Slår du av molnsynk fortsätter uppgifterna finnas kvar hos Supabase, men slutar synkas. Du kan när som helst radera din molndata själv i appen (Inställningar → Licens &amp; molnsynk → Radera molndata) — det sker direkt. Har du fler enheter med molnsynk påslaget bör du stänga av det på dem också, annars synkas datan upp igen.</li>
+    <li>Anonym/pseudonymiserad användningsstatistik (se "Uppgifter vi samlar in" ovan) kan du själv radera i appen, under Inställningar → Dataskydd — det sker direkt.</li>
     <li>Licens- och enhetsuppgifter sparas så länge licensen är aktiv, för att kunna upprätthålla enhetsgränsen per licensnivå.</li>
     <li>Om vi i framtiden sparar uppgifter om dina köp eller licenstransaktioner på våra egna servrar för vår bokföring gäller bokföringslagens krav på minst sju års arkivering för just den uppgiften, vilket i så fall går före en begäran om radering av den specifika transaktionsdatan.</li>
+    <li>Föredrar du att vi raderar molndata eller användningsstatistik åt dig istället, eller vill du ha hjälp med något som inte går att göra själv i appen (t.ex. dina licens-/köpuppgifter), kontaktar du oss <a href="kontakt.html" style="color:var(--forest);text-decoration:underline;">via vår kontaktsida</a> — vi hjälper dig utan onödigt dröjsmål och normalt inom en månad, i linje med tidsfristen för rättighetsbegäranden enligt GDPR (se "Dina rättigheter" nedan).</li>
   </ul>
 
   <h2 class="serif">Cookies</h2>
