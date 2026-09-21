@@ -1003,6 +1003,7 @@ a.contact-card{
 .faq-support-note{
   text-align:center;
   margin-top:48px;
+  margin-bottom:24px;
   padding-top:40px;
   border-top:1px solid var(--line);
   color:var(--ink-soft);
