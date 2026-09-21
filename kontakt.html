@@ -109,6 +109,12 @@
     links.classList.toggle('open');
     nav.classList.toggle('menu-open');
   });
+  links.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      nav.classList.remove('menu-open');
+    });
+  });
 </script>
 
 </body>

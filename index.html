@@ -369,6 +369,16 @@
     links.classList.toggle('open');
     nav.classList.toggle('menu-open');
   });
+  // A same-page anchor link (Funktioner/Priser/Hämta appen) never
+  // triggers a navigation/reload, so nothing else ever closed the menu
+  // after tapping one — only "Kontakt" happened to close it, by the
+  // accident of actually loading a different page.
+  links.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      nav.classList.remove('menu-open');
+    });
+  });
 </script>
 
 <script>
