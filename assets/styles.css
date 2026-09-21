@@ -54,6 +54,15 @@ img{max-width:100%;display:block;}
 
 .nav.scrolled{border-bottom-color:var(--line);}
 
+/* backdrop-filter on .nav makes it the containing block for any
+   position:fixed descendant (a CSS spec quirk, not a bug in the menu
+   itself) — so the mobile .nav-links overlay, whose fixed positioning is
+   meant to cover the whole viewport, was instead positioning itself
+   relative to .nav's own small header box, leaving page content visible
+   through/around it. Dropping the blur while the menu is open removes
+   that containing block, restoring true full-viewport fixed positioning. */
+.nav.menu-open{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--paper);}
+
 .nav .wrap{
   display:flex;
   align-items:center;
@@ -446,7 +455,7 @@ section{padding:120px 0;}
 /* ---------- full feature list page ---------- */
 
 .func-page{
-  padding:80px 0 140px;
+  padding:80px 32px 140px;
   max-width:820px;
   margin:0 auto;
 }
