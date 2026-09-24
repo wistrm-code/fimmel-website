@@ -1203,3 +1203,38 @@ a.contact-card{
   cursor:pointer;
 }
 .demo-restart[hidden]{display:none;}
+
+/* ---------- prisjämförelse Basic vs Pro ---------- */
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+
+.compare{margin:72px auto 0;max-width:820px;}
+.compare>h3{text-align:center;font-weight:600;font-size:24px;letter-spacing:-0.4px;color:var(--ink);margin-bottom:28px;}
+
+.compare-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;}
+.compare-table th,.compare-table td{padding:14px 18px;border-bottom:1px solid var(--line-soft);text-align:center;vertical-align:middle;}
+.compare-table th[scope=row]{text-align:left;font-weight:500;font-size:15px;color:var(--ink);}
+.compare-table thead th{border-bottom:1px solid var(--line);padding:22px 18px 18px;vertical-align:bottom;background:#fff;}
+.compare-table thead th:first-child{width:52%;}
+.compare-table .pro{background:var(--forest-pale);}
+.compare-table thead th.pro{background:var(--forest-pale);}
+.cmp-name{display:block;font-size:13px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);}
+.cmp-price{display:block;font-size:26px;font-weight:600;letter-spacing:-0.5px;margin-top:4px;color:var(--ink);}
+.cmp-note{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+.compare-table .grp th{background:var(--paper-deep);text-align:left;font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);padding:11px 18px;}
+.compare-table td.t{font-size:14px;font-weight:600;color:var(--ink);}
+.compare-table td.y::before{content:"";display:inline-block;width:20px;height:20px;vertical-align:middle;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Ccircle cx='12' cy='12' r='11' stroke='%232F5D4E' stroke-width='1.4'/%3E%3Cpath d='M8 12.5l2.5 2.5L16 9' stroke='%232F5D4E' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;}
+.compare-table td.n::before{content:"";display:inline-block;width:14px;height:2px;border-radius:1px;vertical-align:middle;background:var(--line);}
+.compare-table tbody tr:last-child th,.compare-table tbody tr:last-child td{border-bottom:1px solid var(--line-soft);}
+.compare-table tfoot td{border-bottom:0;padding:22px 18px;}
+.compare-table tfoot .btn{width:100%;}
+.compare-table tfoot td.pro{background:var(--forest-pale);}
+
+@media (max-width:640px){
+  .compare{margin-top:56px;}
+  .compare-table th,.compare-table td{padding:12px 10px;}
+  .compare-table th[scope=row]{font-size:13.5px;}
+  .compare-table thead th:first-child{width:46%;}
+  .cmp-price{font-size:20px;}
+  .compare-table tfoot .btn{padding:13px 8px;font-size:14px;}
+}
