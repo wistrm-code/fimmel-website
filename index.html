@@ -19,8 +19,9 @@
 <meta name="twitter:image" content="https://fimmel.se/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/demo.css">
 <link rel="icon" type="image/png" href="assets/img/logo-icon.png">
 <script type="application/ld+json">
 {
@@ -240,7 +241,7 @@
     <div class="section-head">
       <span class="eyebrow">Prova själv</span>
       <h2 class="serif">Klicka på appen för att testa lite!</h2>
-      <p>Det här är den riktiga appen med exempeldata. Titta runt, skapa en faktura och känn på hur inställningarna fungerar. Inget sparas eller skickas.</p>
+      <p>Titta runt bland exempelkunder och fakturor, skapa en egen faktura och prova hur inställningarna fungerar. Inget sparas eller skickas.</p>
     </div>
     <div class="demo-stage">
       <div class="phone-frame">
@@ -553,7 +554,7 @@
 </script>
 
 <script>
-  // The demo (a Flutter web build) is heavy, so nothing loads until someone taps the logo.
+  // The demo script only loads once someone taps the logo.
   (function () {
     const body = document.getElementById('demoBody');
     const start = document.getElementById('demoStart');
@@ -561,14 +562,19 @@
     if (!body || !start) return;
 
     function launch() {
-      const old = body.querySelector('iframe');
-      if (old) old.remove();
-      const frame = document.createElement('iframe');
-      frame.src = 'demo/app/index.html';
-      frame.title = 'Fimmel Faktura – demo';
-      body.appendChild(frame);
+      let host = body.querySelector('.dm');
+      if (!host) {
+        host = document.createElement('div');
+        body.appendChild(host);
+      }
       start.hidden = true;
       restart.hidden = false;
+      function run() { window.FimmelDemo.start(host); }
+      if (window.FimmelDemo) { run(); return; }
+      const s = document.createElement('script');
+      s.src = 'assets/demo.js';
+      s.onload = run;
+      document.head.appendChild(s);
     }
 
     start.addEventListener('click', launch);
