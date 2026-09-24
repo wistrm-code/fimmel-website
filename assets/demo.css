@@ -178,3 +178,10 @@
 .dm-paper .f10{flex:10;}
 .dm-paper .fs{margin-top:4px;}
 .dm-paper .pcred{text-align:right;margin-top:8px;font-size:9px;color:#B9C4BD;}
+
+/* Filer-skärmen: kort som visas hopfällda och inte går att fälla ut */
+.dm-intro{font-size:13px;line-height:1.55;color:var(--ink-soft);margin:6px 0 16px;}
+.dm-fcard{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;cursor:default;}
+.dm-fcard span{flex:1;font-size:14px;font-weight:600;color:var(--forest-deep);}
+.dm-fcard .dm-i{width:17px;height:17px;color:var(--forest);}
+.dm-fcard .dm-i:last-child{width:20px;height:20px;color:var(--muted);}

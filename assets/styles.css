@@ -1151,11 +1151,8 @@ a.contact-card{
   background:#1E2A25;
   border-radius:12px;
 }
-.phone-status-icons{display:flex;gap:5px;align-items:center;}
-.phone-status-icons i{display:block;background:var(--ink);border-radius:2px;}
-.phone-status-icons i:nth-child(1){width:15px;height:9px;clip-path:polygon(0 100%,100% 100%,100% 0);}
-.phone-status-icons i:nth-child(2){width:14px;height:9px;border-radius:7px 7px 2px 2px;}
-.phone-status-icons i:nth-child(3){width:22px;height:10px;border-radius:3px;}
+.phone-status-icons{display:flex;gap:6px;align-items:center;color:var(--ink);}
+.phone-status-icons svg{display:block;height:12px;width:auto;}
 
 .phone-body{position:relative;flex:1;min-height:0;background:var(--paper);}
 

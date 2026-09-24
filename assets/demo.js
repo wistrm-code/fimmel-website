@@ -48,7 +48,12 @@
       building: '<path d="M5 21V4h9v17M14 9h5v12M8 8h3M8 12h3M8 16h3"/>',
       help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.6M12 17h.01"/>',
       undo: '<path d="M4 12a8 8 0 108-8 8 8 0 00-6 2.7M4 4v4h4M12 8v4l3 2"/>',
-      bell: '<path d="M6 17V11a6 6 0 0112 0v6l2 2H4zM10 21h4"/>'
+      bell: '<path d="M6 17V11a6 6 0 0112 0v6l2 2H4zM10 21h4"/>',
+      down: '<path d="M6 9l6 6 6-6"/>',
+      shield: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/>',
+      wallet: '<path d="M4 7h14a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2zM4 7l11-3v3M16 13.5h.01"/>',
+      list: '<path d="M4 6h10M4 12h10M4 18h6M16 16l2 2 4-4"/>',
+      bank: '<path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/>'
     }[name] || '';
     return '<svg class="dm-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
   }
@@ -393,6 +398,18 @@
     return { body: header(o.number) + '<div class="dm-scroll dm-paperwrap">' + paper(o) + '</div><div class="dm-foot col">' + acts + '</div>' };
   };
 
+  screens.files = function () {
+    var cards = [
+      ['shield', 'Säkerhetskopia'], ['people', 'Importera kunder'], ['wallet', 'Exportera alla kunder och fakturor'],
+      ['doc', 'SIE-fil'], ['list', 'Exportera från fakturaarkivet'], ['bank', 'Avdragsfil till Skatteverket']
+    ].map(function (c) {
+      return '<div class="dm-fcard">' + icon(c[0]) + '<span>' + c[1] + '</span>' + icon('down') + '</div>';
+    }).join('');
+    return {
+      body: header('Filer') + '<div class="dm-scroll"><p class="dm-intro">Allt sparas lokalt på enheten. Här kan du ta ut din data — för säkerhets skull, eller vidare till ett annat program.</p>' + cards + '</div>'
+    };
+  };
+
   screens.settings = function () {
     function tog(key, label, hint) {
       return '<button class="dm-tog" data-a="toggle" data-k="' + key + '"><span class="dm-tog-t"><b>' + label + '</b><small>' + hint + '</small></span><span class="dm-sw ' + (S.settings[key] ? 'on' : '') + '"><i></i></span></button>';
@@ -418,7 +435,7 @@
     var items = [
       ['people', 'Kunder', 'to-browse'], ['doc', 'Fakturaarkiv', 'to-archive'], S.settings.offers ? ['quote', 'Offertarkiv', 'to-offers'] : null,
       ['pencil', 'Arbetsdagbok', 'stub', 'Arbetsdagbok'], ['repeat', 'Återkommande fakturering', 'stub', 'Återkommande fakturering'], ['inbox', 'Utkast', 'stub', 'Utkast'],
-      ['building', 'Företagsprofiler', 'stub', 'Företagsprofiler'], ['sliders', 'Inställningar', 'to-settings'], ['undo', 'Exportera', 'stub', 'Export till bokföring'], ['help', 'Vanliga frågor och support', 'stub', 'Support']
+      ['building', 'Företagsprofiler', 'stub', 'Företagsprofiler'], ['sliders', 'Inställningar', 'to-settings'], ['undo', 'Filer', 'to-files'], ['help', 'Vanliga frågor och support', 'stub', 'Support']
     ].filter(Boolean).map(function (x) { return '<button class="dm-di" data-a="' + x[2] + '"' + (x[3] ? ' data-w="' + x[3] + '"' : '') + '>' + icon(x[0]) + '<span>' + x[1] + '</span></button>'; }).join('');
     return '<div class="dm-drawer-bg" data-a="drawer"></div><div class="dm-drawer"><div class="dm-drawer-t serif">Meny</div>' + items + '<div class="dm-drawer-f">Har du idéer eller synpunkter?<br><span>Maila gärna feedback@fimmel.se</span></div></div>';
   }
@@ -489,6 +506,7 @@
       case 'to-archive': S.nav = [{ name: 'home' }]; S.filter = 'all'; go('archive'); break;
       case 'to-offers': S.nav = [{ name: 'home' }]; go('offers'); break;
       case 'to-settings': S.nav = [{ name: 'home' }]; go('settings'); break;
+      case 'to-files': S.nav = [{ name: 'home' }]; go('files'); break;
       case 'new-customer': S.form = null; go('customerForm', { mode: el.getAttribute('data-mode') || 'invoice' }); break;
       case 'ftype': S.form.type = v; render(); break;
       case 'save-customer':
