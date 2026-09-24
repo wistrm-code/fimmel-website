@@ -1206,4 +1206,3 @@ a.contact-card{
   cursor:pointer;
 }
 .demo-restart[hidden]{display:none;}
-.demo-note{max-width:420px;text-align:center;font-size:14px;color:var(--muted);}
