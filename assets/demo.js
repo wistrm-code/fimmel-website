@@ -72,14 +72,15 @@
       return {
         id: uid(), kind: 'invoice', number: t.getFullYear() + '-' + ('000' + n).slice(-4), customerId: cid,
         date: d, due: addDays(d, c.dueDays), lines: lines, deduction: o.deduction || '',
+        pnr: o.deduction ? '19850615-1235' : '', work: o.work || '', prop: o.prop || '',
         currency: c.currency, paid: !!o.paid, reminderSent: false, credit: false
       };
     }
     var invoices = [
       inv(5, 'c-nord', 5, [{ desc: 'Webbdesign – konsulttimmar', qty: '10', price: '85', vat: 0, kind: 'arbete' }]),
       inv(4, 'c-parl', 12, [{ desc: 'Grundstädning av restauranglokal', qty: '8', price: '480', vat: 25, kind: 'arbete' }, { desc: 'Städmaterial', qty: '1', price: '350', vat: 25, kind: 'material' }]),
-      inv(3, 'c-anna', 25, [{ desc: 'Storstädning, 4 rum', qty: '6', price: '650', vat: 25, kind: 'arbete' }], { deduction: 'RUT', paid: true }),
-      inv(2, 'c-erik', 45, [{ desc: 'Badrumsrenovering – arbete', qty: '40', price: '550', vat: 25, kind: 'arbete' }, { desc: 'Kakel, fix och rörmaterial', qty: '1', price: '12000', vat: 25, kind: 'material' }], { deduction: 'ROT' }),
+      inv(3, 'c-anna', 25, [{ desc: 'Storstädning, 4 rum', qty: '6', price: '650', vat: 25, kind: 'arbete' }], { deduction: 'RUT', paid: true, work: 'Storstädning av bostad' }),
+      inv(2, 'c-erik', 45, [{ desc: 'Badrumsrenovering – arbete', qty: '40', price: '550', vat: 25, kind: 'arbete' }, { desc: 'Kakel, fix och rörmaterial', qty: '1', price: '12000', vat: 25, kind: 'material' }], { deduction: 'ROT', work: 'Renovering av badrum', prop: 'Uppsala Kungsängen 1:23' }),
       inv(1, 'c-karl', 60, [{ desc: 'Målning av trapphus', qty: '25', price: '520', vat: 25, kind: 'arbete' }, { desc: 'Färg och material', qty: '1', price: '3800', vat: 25, kind: 'material' }], { paid: true })
     ];
     var od = ago(10);
@@ -89,7 +90,7 @@
       deduction: '', currency: 'SEK', followUps: 0
     }];
     return {
-      company: { name: 'Sundin Hemservice', org: '850615-1235', vat: 'SE850615123501', addr: 'Björkvägen 4', zip: '753 20', city: 'Uppsala', email: 'hej@sundinhemservice.se', phone: '070-123 45 67', bg: '123-4567', swish: '123 456 78 90' },
+      company: { name: 'Sundin Hemservice', org: '850615-1235', vat: 'SE850615123501', addr: 'Björkvägen 4', zip: '753 20', city: 'Uppsala', email: 'hej@sundinhemservice.se', phone: '070-123 45 67', bg: '123-4567', swish: '123 456 78 90', iban: 'SE35 5000 0000 0549 1000 0003', bic: 'ESSESESS' },
       customers: customers, invoices: invoices, offers: offers,
       settings: { rot: true, rut: true, offers: true, swishQr: true, ore: true, followUp: true },
       counters: { inv: 5, off: 1 },
@@ -163,35 +164,76 @@
       } else on = rnd() > 0.5;
       if (on) cells += '<rect x="' + x + '" y="' + y + '" width="1" height="1"/>';
     }
-    return '<svg viewBox="0 0 ' + N + ' ' + N + '" width="46" height="46" shape-rendering="crispEdges" fill="#1E2A25">' + cells + '</svg>';
+    return '<svg viewBox="0 0 ' + N + ' ' + N + '" width="95" height="95" shape-rendering="crispEdges" fill="#1E2A25">' + cells + '</svg>';
   }
 
-  /* ---------- invoice paper ---------- */
+  /* ---------- invoice paper (mirrors the app's InvoicePaperView, laid out at A4 794x1123 and scaled to fit) ---------- */
+
+  var I18N = {
+    sv: { invoice: 'Faktura', credit: 'Kreditfaktura', offer: 'Offert', recipient: 'Fakturamottagare', offerRecipient: 'Offertmottagare', number: 'Fakturanummer', offerNumber: 'Offertnummer', date: 'Fakturadatum', offerDate: 'Offertdatum', due: 'Förfallodatum', validUntil: 'Giltig till', buyerRef: 'Kundens referens', desc: 'Beskrivning', qty: 'Antal', price: 'À-pris', vat: 'Moms', exAmt: 'Belopp ex moms', inAmt: 'Belopp ink moms', exVatSum: 'Summa exkl. moms', vatSum: 'Moms', due2: 'Summa att betala', refund: 'Summa att erhålla', payTo: 'Betalas till:', swift: 'BIC/Swift', org: 'Org.nummer', vatNo: 'Momsreg.nr', fskatt: 'Godkänd för F-skatt', scan: ['SCANNA MED', 'SWISH-APPEN'], credLine: 'Fakturan skapad av Fimmel Faktura', offerLine: 'Offerten skapad av Fimmel Faktura', labour: 'Arbetskostnad (inkl. moms)', other: 'Övriga kostnader (inkl. moms)', pnr: 'Personnummer', work: 'Typ av arbete', prop: 'Fastighetsbeteckning', ore: 'Öresutjämning' },
+    en: { invoice: 'Invoice', credit: 'Credit note', offer: 'Quote', recipient: 'Bill to', offerRecipient: 'Quote for', number: 'Invoice number', offerNumber: 'Quote number', date: 'Invoice date', offerDate: 'Quote date', due: 'Due date', validUntil: 'Valid until', buyerRef: "Customer's reference", desc: 'Description', qty: 'Qty', price: 'Unit price', vat: 'VAT', exAmt: 'Amount excl. VAT', inAmt: 'Amount incl. VAT', exVatSum: 'Subtotal excl. VAT', vatSum: 'VAT', due2: 'Total due', refund: 'Total to receive', payTo: 'Pay to:', swift: 'BIC/Swift', org: 'Reg. number', vatNo: 'VAT number', fskatt: 'Approved for F-tax', scan: ['SCAN WITH', 'SWISH APP'], credLine: 'Invoice created by Fimmel Faktura', offerLine: 'Quote created by Fimmel Faktura', labour: 'Labour cost (incl. VAT)', other: 'Other costs (incl. VAT)', pnr: 'Personal ID', work: 'Type of work', prop: 'Property designation', ore: 'Rounding' }
+  };
 
   function paper(doc) {
     var c = cust(doc.customerId), co = S.company, t = calc(doc), k = cur(doc.currency);
     var isOffer = doc.kind === 'offer';
-    var title = isOffer ? 'Offert' : (doc.credit ? 'Kreditfaktura' : 'Faktura');
-    var eng = c.country !== 'SE';
-    var rows = doc.lines.filter(function (l) { return l.desc.trim(); }).map(function (l) {
-      var n = num(l.qty) * num(l.price) * (doc.credit ? -1 : 1);
-      return '<tr><td>' + esc(l.desc) + '</td><td class="r">' + esc(l.qty) + '</td><td class="r">' + fmt(num(l.price)) + '</td><td class="r">' + l.vat + '%</td><td class="r">' + fmt(n) + '</td></tr>';
+    var L = I18N[c.country !== 'SE' ? 'en' : 'sv'];
+    var title = isOffer ? L.offer : (doc.credit ? L.credit : L.invoice);
+    var inclVat = c.type === 'privat';
+    var sign = doc.credit ? -1 : 1;
+    var lines = doc.lines.filter(function (l) { return l.desc.trim(); });
+    var rows = lines.map(function (l) {
+      var n = num(l.qty) * num(l.price), amt = (inclVat ? n * (1 + l.vat / 100) : n) * sign;
+      return '<div class="pr"><span class="c1">' + esc(l.desc) + '</span><span class="c2 m">' + esc(l.qty) + '</span><span class="c3 m">' + fmt(num(l.price)) + '</span><span class="c4 m">' + l.vat + '%</span><span class="c5 m">' + fmt(amt) + '</span></div>';
     }).join('');
-    var dedLine = doc.deduction ? '<div class="dm-p-tot"><span>' + doc.deduction + '-avdrag (' + (doc.deduction === 'ROT' ? '30' : '50') + ' %)</span><span>−' + fmt(Math.abs(t.ded)) + '</span></div>' : '';
-    var rnd = Math.abs(t.rounding) > 0.004 ? '<div class="dm-p-tot"><span>Öresutjämning</span><span>' + fmt(t.rounding) + '</span></div>' : '';
-    var pay = doc.deduction ? 'Summa att betala efter avdrag' : 'Summa att betala';
-    var qrBlock = (!isOffer && S.settings.swishQr && doc.currency === 'SEK') ? '<div class="dm-p-qr">' + qr() + '<small>Scanna med Swish-appen</small></div>' : '';
-    var note = doc.deduction ? '<div class="dm-p-note">Faktura med ' + doc.deduction + '-avdrag. Kunden betalar endast summan efter skattereduktion.</div>' : '';
-    return '<div class="dm-paper">'
-      + '<div class="dm-p-top"><div class="dm-p-co">' + esc(co.name) + '</div><div class="dm-p-title">' + title + '</div></div>'
-      + '<div class="dm-p-meta"><div><small>' + (isOffer ? 'OFFERTMOTTAGARE' : 'FAKTURAMOTTAGARE') + '</small><b>' + esc(c.name) + '</b>' + esc(c.address || '') + '<br>' + esc(c.zip || '') + ' ' + esc(c.city || '') + (c.ref ? '<br>Kundens referens: ' + esc(c.ref) : '') + '</div>'
-      + '<div class="r"><span>' + (isOffer ? 'Offertnummer' : 'Fakturanummer') + ': ' + esc(doc.number || 'Utkast') + '</span><span>' + (isOffer ? 'Offertdatum' : 'Fakturadatum') + ': ' + iso(doc.date) + '</span><span>' + (isOffer ? 'Giltig till' : 'Förfallodatum') + ': ' + iso(doc.due) + '</span>' + (eng ? '<span>Valuta: EUR</span>' : '') + '</div></div>'
-      + (!isOffer ? '<div class="dm-p-pay"><div><small>BETALAS TILL</small>Bankgiro: ' + esc(co.bg) + (S.settings.swishQr ? '<br>Swish: ' + esc(co.swish) : '') + '</div>' + qrBlock + '</div>' : '')
-      + '<table><thead><tr><th>Beskrivning</th><th class="r">Antal</th><th class="r">À-pris</th><th class="r">Moms</th><th class="r">Belopp</th></tr></thead><tbody>' + rows + '</tbody></table>'
-      + '<div class="dm-p-totals"><div class="dm-p-tot"><span>Summa exkl. moms</span><span>' + fmt(t.net) + ' ' + k + '</span></div><div class="dm-p-tot"><span>Moms</span><span>' + fmt(t.tax) + ' ' + k + '</span></div>' + dedLine + rnd
-      + '<div class="dm-p-tot big"><span>' + pay + '</span><span>' + fmt(t.pay) + ' ' + k + '</span></div></div>' + note
-      + '<div class="dm-p-foot"><div><b>' + esc(co.name) + '</b><br>' + esc(co.addr) + '<br>' + esc(co.zip) + ' ' + esc(co.city) + '<br>' + esc(co.phone) + '</div><div>Org.nummer: ' + esc(co.org) + '<br>Momsreg.nr: ' + esc(co.vat) + '<br>Godkänd för F-skatt</div></div>'
-      + '</div>';
+
+    var meta = '<div class="mr"><b>' + (isOffer ? L.offerNumber : L.number) + ':</b> ' + esc(doc.number || '') + '</div>'
+      + '<div class="mr"><b>' + (isOffer ? L.offerDate : L.date) + ':</b> ' + iso(doc.date) + '</div>'
+      + '<div class="mr"><b>' + (isOffer ? L.validUntil : L.due) + ':</b> ' + iso(doc.due) + '</div>';
+
+    var showQr = !isOffer && !doc.credit && S.settings.swishQr && doc.currency === 'SEK';
+    var payLines = [['Bankgiro', co.bg], ['Swish', co.swish], ['IBAN', co.iban + ' (' + L.swift + ': ' + co.bic + ')']].map(function (p) { return '<div class="pl">' + p[0] + ': ' + esc(p[1]) + '</div>'; }).join('');
+    var payBox = isOffer ? '' : '<div class="paybox"><div class="payl"><div class="lab">' + L.payTo.toUpperCase().replace(':', '') + '</div>' + payLines + '</div>'
+      + (showQr ? '<div class="qrc"><div class="lab">' + L.scan[0] + '</div><div class="lab">' + L.scan[1] + '</div>' + qr() + '</div>' : '') + '</div>';
+
+    var ded = '';
+    if (doc.deduction && !isOffer) {
+      ded = '<div class="dedb"><div class="lab">' + doc.deduction + '-AVDRAG</div><div class="sm">' + L.pnr + ': ' + esc(doc.pnr || '') + '</div>'
+        + (doc.work ? '<div class="sm">' + L.work + ': ' + esc(doc.work) + '</div>' : '')
+        + (doc.deduction === 'ROT' && doc.prop ? '<div class="sm">' + L.prop + ': ' + esc(doc.prop) + '</div>' : '') + '</div>';
+    }
+
+    var labour = 0, other = 0;
+    lines.forEach(function (l) { var g = num(l.qty) * num(l.price) * (1 + l.vat / 100); if (l.kind === 'arbete') labour += g; else other += g; });
+    var sums = '<div class="tr"><span>' + L.exVatSum + '</span><span class="m">' + fmt(t.net) + ' ' + k + '</span></div><div class="tr"><span>' + L.vatSum + '</span><span class="m">' + fmt(t.tax) + ' ' + k + '</span></div>';
+    if (doc.deduction && !isOffer) {
+      sums += '<div class="tr"><span>' + L.labour + '</span><span class="m">' + fmt(labour * sign) + ' ' + k + '</span></div>';
+      if (other > 0) sums += '<div class="tr"><span>' + L.other + '</span><span class="m">' + fmt(other * sign) + ' ' + k + '</span></div>';
+      sums += '<div class="tr"><span>' + doc.deduction + '-avdrag (' + (doc.deduction === 'ROT' ? 30 : 50) + '%)</span><span class="m">-' + fmt(Math.abs(t.ded)) + ' ' + k + '</span></div>';
+    }
+    if (Math.abs(t.rounding) > 0.004) sums += '<div class="tr"><span>' + L.ore + '</span><span class="m">' + fmt(t.rounding) + ' ' + k + '</span></div>';
+
+    return '<div class="dm-paper"><div class="pg">'
+      + '<div class="ph"><div class="pco">' + esc(co.name) + '</div><div class="ptitle">' + title + '</div></div>'
+      + '<div class="pblock"><div class="pl5"><div class="lab">' + (isOffer ? L.offerRecipient : L.recipient).toUpperCase() + '</div><div class="cn">' + esc(c.name) + '</div><div class="ca">' + esc(c.address || '') + '<br>' + esc(c.zip || '') + ' ' + esc(c.city || '') + '</div>'
+      + (c.ref ? '<div class="sm mt">' + L.buyerRef + ': ' + esc(c.ref) + '</div>' : '') + ded + '</div>'
+      + '<div class="pl4">' + meta + payBox + '</div></div>'
+      + '<div class="thead"><span class="c1">' + L.desc.toUpperCase() + '</span><span class="c2">' + L.qty.toUpperCase() + '</span><span class="c3">' + L.price.toUpperCase() + '</span><span class="c4">' + L.vat.toUpperCase() + '</span><span class="c5">' + (inclVat ? L.inAmt : L.exAmt).toUpperCase() + '</span></div>'
+      + rows + '<div class="spacer"></div>'
+      + '<div class="sumwrap"><div class="sum">' + sums + '<div class="tr big"><span>' + (doc.credit ? L.refund : L.due2) + '</span><span class="m">' + fmt(t.pay) + ' ' + k + '</span></div></div></div>'
+      + '<div class="pfoot"><div class="f11"><b>' + esc(co.name) + '</b><div>' + esc(co.addr) + '</div><div>' + esc(co.zip) + ' ' + esc(co.city) + '</div><div>' + esc(co.phone) + '</div><div>' + esc(co.email) + '</div></div>'
+      + (isOffer ? '<div class="f10"></div>' : '<div class="f10"><b>' + L.payTo + '</b><div>Bankgiro: ' + esc(co.bg) + '</div><div>Swish: ' + esc(co.swish) + '</div><div>IBAN: ' + esc(co.iban) + '</div><div>' + L.swift + ': ' + esc(co.bic) + '</div></div>')
+      + '<div class="f10"><div>' + L.org + ': ' + esc(co.org) + '</div><div>' + L.vatNo + ': ' + esc(co.vat) + '</div><b class="fs">' + L.fskatt + '</b></div></div>'
+      + '<div class="pcred">' + (isOffer ? L.offerLine : L.credLine) + '</div>'
+      + '</div></div>';
+  }
+
+  function fitPapers() {
+    [].forEach.call(host.querySelectorAll('.dm-paper'), function (w) {
+      var pg = w.firstChild, s = w.clientWidth / 794;
+      pg.style.transform = 'scale(' + s + ')';
+      w.style.height = (1123 * s) + 'px';
+    });
   }
 
   /* ---------- draft helpers ---------- */
@@ -201,7 +243,8 @@
     var lines = from ? from.lines.map(function (l) { return { desc: l.desc, qty: l.qty, price: l.price, vat: l.vat, kind: l.kind }; }) : [{ desc: '', qty: '1', price: '', vat: 25, kind: 'arbete' }];
     S.draft = {
       kind: kind, customerId: customerId, credit: false, date: d, due: addDays(d, kind === 'offer' ? 30 : c.dueDays),
-      lines: lines, deduction: from ? from.deduction : '', currency: c.currency, number: ''
+      lines: lines, deduction: from ? from.deduction : '', currency: c.currency, number: '',
+      pnr: from && from.pnr ? from.pnr : '19850615-1235', work: from ? from.work || '' : '', prop: from ? from.prop || '' : ''
     };
   }
 
@@ -275,7 +318,9 @@
     var ded = (S.settings.rot || S.settings.rut) && !isOffer ? '<div class="dm-card"><div class="dm-label">Avdrag (ROT / RUT)</div><div class="dm-chips"><button class="dm-chip ' + (!d.deduction ? 'on' : '') + '" data-a="ded" data-v="">Ingen</button>'
       + (S.settings.rot ? '<button class="dm-chip ' + (d.deduction === 'ROT' ? 'on' : '') + '" data-a="ded" data-v="ROT">ROT</button>' : '')
       + (S.settings.rut ? '<button class="dm-chip ' + (d.deduction === 'RUT' ? 'on' : '') + '" data-a="ded" data-v="RUT">RUT</button>' : '') + '</div>'
-      + (d.deduction ? '<p class="dm-hint">Ange om varje rad är arbete eller material – avdraget räknas bara på arbetet.</p>' : '') + '</div>' : '';
+      + (d.deduction ? '<label class="dm-f"><span>Personnummer (köpare)</span><input data-bind="pnr" value="' + esc(d.pnr) + '"></label><label class="dm-f"><span>Typ av arbete</span><input data-bind="work" value="' + esc(d.work) + '" placeholder="T.ex. Renovering av badrum"></label>'
+        + (d.deduction === 'ROT' ? '<label class="dm-f"><span>Fastighetsbeteckning</span><input data-bind="prop" value="' + esc(d.prop) + '" placeholder="T.ex. Uppsala Kungsängen 1:23"></label>' : '')
+        + '<p class="dm-hint">Ange om varje rad är arbete eller material – avdraget räknas bara på arbetet.</p>' : '') + '</div>' : '';
     var typeRow = !isOffer ? '<div class="dm-chips"><button class="dm-chip ' + (!d.credit ? 'on' : '') + '" data-a="credit" data-v="0">Faktura</button><button class="dm-chip ' + (d.credit ? 'on' : '') + '" data-a="credit" data-v="1">Kreditfaktura</button></div>' : '';
     var lines = d.lines.map(function (l, i) {
       return '<div class="dm-card dm-line"><div class="dm-line-h"><span class="dm-label">Rad ' + (i + 1) + '</span>' + (d.lines.length > 1 ? '<button class="dm-ib red" data-a="del-line" data-i="' + i + '" aria-label="Ta bort rad">' + icon('trash') + '</button>' : '') + '</div>'
@@ -388,6 +433,7 @@
     if (!scrollTop) { var s2 = host.querySelector('.dm-scroll'); if (s2) s2.scrollTop = prevScroll; }
     if (S.expired) host.querySelector('.dm-app').insertAdjacentHTML('beforeend', overlayHtml());
     updateLive();
+    fitPapers();
   }
 
   function updateLive() {
@@ -415,7 +461,7 @@
       replaceTop('sent', { kind: 'offer', number: o.number, name: c.name });
     } else {
       S.counters.inv++;
-      var i = { id: uid(), kind: 'invoice', number: y + '-' + ('000' + S.counters.inv).slice(-4), customerId: d.customerId, date: d.date, due: d.due, lines: d.lines.filter(function (l) { return l.desc.trim(); }), deduction: d.deduction, currency: d.currency, paid: false, reminderSent: false, credit: d.credit };
+      var i = { id: uid(), kind: 'invoice', number: y + '-' + ('000' + S.counters.inv).slice(-4), customerId: d.customerId, date: d.date, due: d.due, lines: d.lines.filter(function (l) { return l.desc.trim(); }), deduction: d.deduction, pnr: d.pnr, work: d.work, prop: d.prop, currency: d.currency, paid: false, reminderSent: false, credit: d.credit };
       S.invoices.unshift(i);
       S.draft = null;
       replaceTop('sent', { kind: 'invoice', number: i.number, name: c.name });
@@ -488,6 +534,7 @@
     var b = el.getAttribute('data-bind'), val = el.value;
     if (b === 'search') { S.search = val; var keep = el.selectionStart; render(); var i = host.querySelector('[data-bind="search"]'); if (i) { i.focus(); i.setSelectionRange(keep, keep); } return; }
     if (b.indexOf('form.') === 0) { S.form[b.slice(5)] = val; return; }
+    if (b === 'pnr' || b === 'work' || b === 'prop') { S.draft[b] = val; return; }
     if (b === 'date') { if (val) S.draft.date = fromIso(val); return; }
     if (b === 'due') { if (val) S.draft.due = fromIso(val); return; }
     var m = b.match(/^line\.(\d+)\.(\w+)$/);
@@ -510,6 +557,7 @@
     S = seed();
     clearTimeout(timer); timer = null;
     host.classList.add('dm');
+    window.addEventListener('resize', function () { if (host) fitPapers(); });
     host.onclick = function (e) {
       armTimer();
       var t = e.target.closest('[data-a]');
