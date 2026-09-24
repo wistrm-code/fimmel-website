@@ -80,6 +80,7 @@
     </div>
     <div class="nav-links" id="navLinks">
       <a href="#funktioner">Funktioner</a>
+      <a href="#demo">Demo</a>
       <a href="#priser">Priser</a>
       <a href="kontakt.html">Kontakt</a>
       <a href="#hamta" class="nav-cta">Hämta appen</a>
@@ -234,6 +235,35 @@
   </div>
 </section>
 
+<section id="demo" class="demo-section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Prova själv</span>
+      <h2 class="serif">Klicka på appen för att testa lite!</h2>
+      <p>Det här är den riktiga appen med exempeldata. Titta runt, skapa en faktura och känn på hur inställningarna fungerar. Inget sparas eller skickas.</p>
+    </div>
+    <div class="demo-stage">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-status" aria-hidden="true">
+            <span>9:41</span>
+            <span class="phone-status-icons"><i></i><i></i><i></i></span>
+          </div>
+          <div class="phone-body" id="demoBody">
+            <button type="button" class="demo-start" id="demoStart" aria-label="Starta demon av Fimmel Faktura">
+              <img src="assets/img/logo-icon.png" alt="">
+              <span>Tryck på appen för att starta</span>
+            </button>
+          </div>
+          <div class="phone-home" aria-hidden="true"></div>
+        </div>
+      </div>
+      <button type="button" class="demo-restart" id="demoRestart" hidden>Börja om demon</button>
+      <p class="demo-note">Demon nollställs efter en timme. PDF-export, e-post och molnsynk finns bara i den riktiga appen.</p>
+    </div>
+  </div>
+</section>
+
 <section id="priser">
   <div class="wrap">
     <div class="section-head">
@@ -336,6 +366,7 @@
         <div class="footer-col">
           <h4>Produkt</h4>
           <a href="#funktioner">Funktioner</a>
+          <a href="#demo">Prova demon</a>
           <a href="funktioner.html">Alla funktioner</a>
           <a href="#priser">Priser</a>
         </div>
@@ -519,6 +550,30 @@
   }
 
   accBack.addEventListener('click', resetToStart);
+</script>
+
+<script>
+  // The demo (a Flutter web build) is heavy, so nothing loads until someone taps the logo.
+  (function () {
+    const body = document.getElementById('demoBody');
+    const start = document.getElementById('demoStart');
+    const restart = document.getElementById('demoRestart');
+    if (!body || !start) return;
+
+    function launch() {
+      const old = body.querySelector('iframe');
+      if (old) old.remove();
+      const frame = document.createElement('iframe');
+      frame.src = 'demo/app/index.html';
+      frame.title = 'Fimmel Faktura – demo';
+      body.appendChild(frame);
+      start.hidden = true;
+      restart.hidden = false;
+    }
+
+    start.addEventListener('click', launch);
+    restart.addEventListener('click', launch);
+  })();
 </script>
 
 </body>
