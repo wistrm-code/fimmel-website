@@ -16,8 +16,15 @@
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
-html{scroll-behavior:smooth;scroll-padding-top:100px;}
+html{scroll-behavior:smooth;scroll-padding-top:100px;overflow-x:hidden;}
 
+/* The closed mobile .nav-links menu sits off-canvas via transform:translateX(100%)
+   (see its own comment further down) — harmless on iOS Safari, but on Chrome/Android
+   that off-canvas box still counts toward the page's layout width once backdrop-filter
+   turns .nav into its containing block, so the whole site got silently rendered at
+   ~50% zoom on Android with everything (including the demo) landing under the finger's
+   actual tap. overflow-x:hidden on html+body stops the browser from ever widening the
+   viewport for that off-canvas content. */
 body{
   background:var(--paper);
   color:var(--ink);
@@ -25,6 +32,7 @@ body{
   font-size:17px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
 
 .serif{font-family:'Fraunces',serif;}
