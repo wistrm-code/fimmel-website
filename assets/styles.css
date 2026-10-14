@@ -635,6 +635,14 @@ section{padding:120px 0;}
   margin-bottom:14px;
 }
 
+.price-was{
+  font-family:'Fraunces',serif;
+  font-size:20px;
+  color:var(--muted);
+  text-decoration:line-through;
+  margin-bottom:2px;
+}
+
 .price-num{
   font-family:'Fraunces',serif;
   font-weight:600;
@@ -648,6 +656,13 @@ section{padding:120px 0;}
   font-weight:500;
   color:var(--muted);
   letter-spacing:0;
+}
+
+.price-intro{
+  margin-top:6px;
+  color:var(--forest);
+  font-size:12.5px;
+  font-weight:600;
 }
 
 .price-note{
@@ -1227,7 +1242,8 @@ a.contact-card{
 .compare-table .pro{background:var(--forest-pale);}
 .compare-table thead th.pro{background:var(--forest-pale);}
 .cmp-name{display:block;font-size:13px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);}
-.cmp-price{display:block;font-size:26px;font-weight:600;letter-spacing:-0.5px;margin-top:4px;color:var(--ink);}
+.cmp-was{display:block;font-size:14px;color:var(--muted);text-decoration:line-through;margin-top:4px;}
+.cmp-price{display:block;font-size:26px;font-weight:600;letter-spacing:-0.5px;margin-top:2px;color:var(--ink);}
 .cmp-note{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
 .compare-table .grp th{background:var(--paper-deep);text-align:left;font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft);padding:11px 18px;}
 .compare-table td.t{font-size:14px;font-weight:600;color:var(--ink);}
@@ -1244,5 +1260,6 @@ a.contact-card{
   .compare-table th[scope=row]{font-size:13.5px;}
   .compare-table thead th:first-child{width:46%;}
   .cmp-price{font-size:20px;}
+  .cmp-was{font-size:12px;}
   .compare-table tfoot .btn{padding:13px 8px;font-size:14px;}
 }
