@@ -6,7 +6,8 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'sha256-b+1AK6CpMP0Bx6F9pr3+Gcp/JzfJiJGHrDW40HDNDHY=' 'sha256-dQkiFrylE3LYer91zap1vT/3EYXX4NjosfJ7t6DcHUc=' 'sha256-yo+q8iKocOBmL3v67S3L2e7yS+BXY889oo5+U2MadX4=' 'sha256-8ZfDqbUmrhC0/444wzmudka3HCmBmntuAa/ICm9kXMQ=' 'sha256-lxW9y0g7nIXWPcJsTMne57e2gbqZ4Xaw9N8Xg63X7Nw=' 'sha256-7guy1ApjTjU/71mEO6/vVQL/AwEDgYowHU0ouX07GNI=' 'sha256-8oBaQv9tTQWwCUn0HUhtt6AVKBGEE2Hdw84pGvrMRIE=' 'sha256-ta9gQoU6Duf0brwBCX61g+Fy+cGLlfAnXVOG4h76nRk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://jfgokufdfzztgdoypeuv.supabase.co https://api.web3forms.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'" }
       ]
     }
   ]
