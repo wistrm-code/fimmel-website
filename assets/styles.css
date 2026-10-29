@@ -752,6 +752,13 @@ footer{
   font-size:20px;
 }
 
+.footer-addr{
+  margin-top:10px;
+  font-size:13px;
+  line-height:1.6;
+  color:var(--muted);
+}
+
 .footer-cols{
   display:flex;
   gap:64px;
