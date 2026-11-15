@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tack för ditt köp — Fimmel Faktura</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" type="image/png" href="assets/img/logo-icon.png">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="/" class="nav-logo"><img src="assets/img/logo-icon.png" alt="Fimmel Faktura" height="44"></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#funktioner">Funktioner</a>
+      <a href="index.html#priser">Priser</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="index.html#hamta" class="nav-cta">Hämta appen</a>
+    </div>
+    <button class="nav-mobile-toggle" id="navToggle" aria-label="Meny">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="#1E2A25" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+
+<section class="contact-hero">
+  <div class="wrap">
+    <h1 class="serif">Tack för ditt köp!</h1>
+    <p id="tackStatus">Hämtar din licensnyckel…</p>
+  </div>
+</section>
+
+<div class="wrap" style="max-width:640px;margin:0 auto 72px;">
+  <div id="tackKey" hidden style="background:#fff;border:1px solid rgba(30,42,37,.12);border-radius:14px;padding:24px;">
+    <p style="margin:0 0 10px;font-weight:600;">Din licensnyckel</p>
+    <code id="tackKeyText" style="display:block;word-break:break-all;font-size:14px;background:rgba(47,93,78,.07);padding:12px 14px;border-radius:8px;user-select:all;"></code>
+    <button id="tackCopy" type="button" class="nav-cta" style="margin-top:14px;border:0;cursor:pointer;">Kopiera nyckeln</button>
+    <p style="margin:18px 0 0;font-size:14.5px;line-height:1.6;color:#55625C;">
+      Köpte du från Fimmel Faktura på datorn ansluts licensen i appen automatiskt — du behöver inte göra något mer.
+      Spara ändå nyckeln: den behövs om du vill använda licensen på en annan enhet (Inställningar → Licens &amp; molnsynk).
+      Kvittot kommer från Stripe, som är återförsäljare av licensen.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo serif">Fimmel Faktura</div>
+        <div class="footer-addr">
+          Fimmel AB<br>
+          Friggagatan 21, 416 64 Göteborg<br>
+          Org.nr 559607-0689 · VAT SE559607068901
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Produkt</h4>
+          <a href="index.html#funktioner">Funktioner</a>
+          <a href="funktioner.html">Alla funktioner</a>
+          <a href="index.html#priser">Priser</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="kontakt.html">Kontakt</a>
+          <a href="support.html">Support &amp; FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Juridiskt</h4>
+          <a href="integritetspolicy.html">Integritetspolicy</a>
+          <a href="villkor.html">Användarvillkor</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Fimmel Faktura</span>
+      <span>Gjord för svenska småföretagare</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  });
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    links.classList.toggle('open');
+    nav.classList.toggle('menu-open');
+  });
+  links.querySelectorAll('a').forEach((a) => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      nav.classList.remove('menu-open');
+    });
+  });
+</script>
+
+<script src="assets/tack.js"></script>
+</body>
+</html>
